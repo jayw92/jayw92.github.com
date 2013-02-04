@@ -1,0 +1,39 @@
+body {
+  background-color:#4579F1;
+	color:#E5E5E5;
+  font-family:"Copperplate Gothic Light";
+  text-align:left;
+  font-size:13px;
+}
+#me {
+	border-radius:5px;
+}
+.links:link {
+	color:#FFCC00;
+}
+.section {
+	font-family:"Times New Roman";
+}
+.top, .top2 {
+	font-size:14px;
+	color:#006;
+	font-family:"Copperplate Gothic Light";
+	font-style:italic;
+	font-weight:bold;
+}
+.top2 {
+	padding-left:2%;
+	color:#00C;
+	text-decoration:underline;
+	font-style:normal;
+}
+#bio{
+	padding-left:2%;
+	padding-right:2%;
+	font-family:Verdana, Geneva, sans-serif;
+	color:#00C;
+}
+.footer, .header{
+	text-align:center;
+	padding-bottom:20px;
+}
