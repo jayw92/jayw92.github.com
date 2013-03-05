@@ -215,7 +215,6 @@ function setupStations(){
          var train_path1 = new Array();
          //For branched path into Braintree
          var train_path2 = new Array();
-         train_path2[0] = traindata[12][1];
          count2 = 1;
 
          closestI = 0;
@@ -245,6 +244,7 @@ function setupStations(){
             if (z < 17)
                train_path1[z] = traindata[z][1];
             else{
+               train_path2[0] = traindata[12][1];
                train_path2[count2] = traindata[z][1];
                count2++;
             }
