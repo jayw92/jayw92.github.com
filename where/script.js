@@ -156,7 +156,7 @@ function setupStations(){
    request2.onreadystatechange = function(){
       if (request2.readyState == 4 && request2.status == 200) {
          //Parsed array of the data received
-         parsed = (request2.responseText).split('\r\n');
+         parsed = (request2.responseText).split('\n');
 
          for (x = 0; x < parsed.length; x++){
             //Parsed datastream for each line of data
