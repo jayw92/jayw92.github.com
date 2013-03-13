@@ -9,8 +9,15 @@
       time = new Date();
       statusUpdate = '<p>' + time.getMonth() + '/' + time.getDate() + '/' + time.getFullYear() + ' ' + time.getHours() + ':' + time.getMinutes() + ' - ';
       statusUpdate = statusUpdate + document.getElementById("msg").value + '</p>';
-      str = document.getElementById("status").innerHTML;
-      document.getElementById("status").innerHTML = statusUpdate + str;
+      localStorage[time.getTime()] = statusUpdate;
+      showStatus();
+   }
+   function showStatus(){
+      statuses = "";
+      for (key in localStorage) {
+         statuses = localStorage[key] + statuses;
+      }
+      document.getElementById("status").innerHTML = statuses;
    }
 </script>
 </head>
