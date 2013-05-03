@@ -1,4 +1,6 @@
 //Get database and turn it into data to use as check
+    var database;
+	var actualPW;
 function start(){
 	signuperror = document.getElementById("signuperror");
 	loginerror = document.getElementById("loginerror");
@@ -29,37 +31,37 @@ function check_fields(){
 	if (pass1.length < 6){
 		signuperrormsg('Passwords need to be at least 6 characters long!');
 		resetPassFields();
-		return false;
 	}
 	
 	//check if the user input their password correctly
 	if (pass1 != pass2){
 		signuperrormsg('Passwords do not match!');
 		resetPassFields();
-		return false;
 	}
 	
 	//If passwords are fine check other fields
 	if (pass1 == pass2){
-		if ( $.inArray(name_ , database) > -1 ) {
-			signuperrormsg('Name {' + name_ + '} is already registered in our database!');
-			return false;
-		}
-		if ( $.inArray(email_ , database) > -1 ) {
+		var redir = 1;
+		for (i in database){
+			if (database[i]["fullname"] == name_){
+				signuperrormsg('Name {' + name_ + '} is already registered in our database!');
+			redir = 0;
+			}
+			if (database[i]["email"] == email_){
 			signuperrormsg('Email {' + email_ + '} is already registered in our database!');
-			return false;
-		}
-		if ( $.inArray(username_ , database) > -1 ) {
+			redir = 0;
+			}
+			if (database[i]["username"] == username_){
 			signuperrormsg('Username {' + username_ + '} is already registered in our database!');
-			return false;
+			redir = 0;
+			}
 		}
 		//Reaching here means all fields are good to be posted to database
 		//POST API HERE
-		else{
+		if (redir == 1){
 			data = {"fullname": name_, "address": address_, "age": age_, "email": email_, "username": username_, "password": pass1};
-			request = new XMLHttpRequest();
-			request.open("POST", "http://limitless-beyond-4298.herokuapp.com/memberpost.json", true);
-			request.send(data);
+			$.post('http://limitless-beyond-4298.herokuapp.com/memberpost.json', data);
+			window.location = "index.html";
 		}
 	}
 }
@@ -68,25 +70,24 @@ function check_fields(){
 function check_login(){
 	logname_ = document.forms["form2"]["login-name"].value;
 	logpw_ = document.forms["form2"]["login-pw"].value;
-	
-	//Username or pw does not exist in database
 	//Error does not give away too much information (security)
-	if (( $.inArray(logname_ , database) < 0 )||( $.inArray(logpw_ , database) < 0 )) {
-			loginerrormsg('Username and password combination is wrong!');
-			return false;
+	request2 = new XMLHttpRequest();
+	request2.open("GET", "http://limitless-beyond-4298.herokuapp.com/passwordcheck?username=" + logname_, true);
+	request2.send(null);
+	request2.onreadystatechange = function(){
+		if (request2.readyState == 4 && request2.status == 200) {
+     		actualPW = request2.responseText;
+      	}
 	}
-	//Username is in database
-	if ( $.inArray(logname_ , database) > -1 ) {
 		//Need to check to see if password is matching
-		if (logpw_ != SOMETHINGGOESHERE__________________________________){
+		if (logpw_ != actualPW){
+			resetPassFields();
 			loginerrormsg('Username and password combination is wrong!');
-			return false;
 		}
 		//logs in the user somehow aka redirects to main page with user credentials
-		else if (logpw_ == SOMETHINGGOESHERE_________________________________){
-			return true;
+		else{
+			window.location = "index.html";
 		}
-	}
 }
 
 //Resets the password fields for the sign up form
