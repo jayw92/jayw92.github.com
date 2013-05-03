@@ -3,6 +3,7 @@ function start(){
 	signuperror = document.getElementById("signuperror");
 	loginerror = document.getElementById("loginerror");
 	//Use get API of member database here
+	request = new XMLHttpRequest();
 	request.open("GET", "http://limitless-beyond-4298.herokuapp.com/members", true);
 	request.send(null);
 	request.onreadystatechange = function(){
@@ -56,8 +57,9 @@ function check_fields(){
 		//POST API HERE
 		else{
 			data = {"fullname": name_, "address": address_, "age": age_, "email": email_, "username": username_, "password": pass1};
-			$.post("http://limitless-beyond-4298.herokuapp.com/memberpost.json", data);
-			
+			request = new XMLHttpRequest();
+			request.open("POST", "http://limitless-beyond-4298.herokuapp.com/memberpost.json", true);
+			request.send(data);
 		}
 	}
 }
