@@ -14,7 +14,7 @@ function search() {
    request.execute(function(response) {
       link = "//www.youtube.com/embed/" + videoID;
       var str = JSON.stringify(response.result);
-      data = JSON.parse(request.responseText);
+      data = JSON.parse(response.result);
       newHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
 
       document.getElementById("search-container").innerHTML = newHTML;
