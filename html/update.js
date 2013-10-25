@@ -8,21 +8,21 @@ function search() {
    videoID = $('#vidId').val();
    var request = gapi.client.youtube.videos.list({
       id: videoID,
-      part: 'snippet'
+      part: 'snippet','statistics'
    });
 
    request.execute(function(response) {
       link = "//www.youtube.com/embed/" + videoID;
       var str = JSON.stringify(response.result);
       data = JSON.parse(str);
-      v_Title = data['items']['snippet']['title'];
-      v_Description = data['items']['snippet']['description'];
-      v_Thumb_URL = data['items']['snippet']['thumbnails']['default']['url'];
-      v_ViewCount = data['items']['statistics']['viewCount'];
-      v_LikeCount = data['items']['statistics']['likeCount'];
-      v_DislikeCount = data['items']['statistics']['dislikeCount'];
-      v_FavoriteCount = data['items']['statistics']['favoriteCount'];
-      v_CommentCount = data['items']['statistics']['commentCount'];
+      v_Title = data['items'][0]['snippet']['title'];
+      v_Description = data['items'][0]['snippet']['description'];
+      v_Thumb_URL = data['items'][0]['snippet']['thumbnails']['default']['url'];
+      v_ViewCount = data['items'][0]['statistics']['viewCount'];
+      v_LikeCount = data['items'][0]['statistics']['likeCount'];
+      v_DislikeCount = data['items'][0]['statistics']['dislikeCount'];
+      v_FavoriteCount = data['items'][0]['statistics']['favoriteCount'];
+      v_CommentCount = data['items'][0]['statistics']['commentCount'];
       newHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
       newHTML = newHTML + "<h3>Title: " + v_Title + "</h3>";
       newHTML = newHTML + "<h4>Description: " + v_Description + "</h4>";
