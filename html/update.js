@@ -8,7 +8,7 @@ function search() {
    videoID = $('#vidId').val();
    var request = gapi.client.youtube.videos.list({
       id: videoID,
-      part: 'snippet','statistics'
+      part: 'snippet,statistics'
    });
 
    request.execute(function(response) {
