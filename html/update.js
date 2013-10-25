@@ -14,7 +14,7 @@ function search() {
    request.execute(function(response) {
       link = "//www.youtube.com/embed/" + videoID;
       var str = JSON.stringify(response.result);
-      data = JSON.parse(response.result);
+      data = JSON.parse(str);
       v_Title = data['items']['snippet']['title'];
       v_Description = data['items']['snippet']['description'];
       v_Thumb_URL = data['items']['snippet']['thumbnails']['default']['url'];
