@@ -12,7 +12,7 @@ function search() {
    });
 
    request.execute(function(response) {
-      link = "//www.youtube.com/embed/" + videoID
+      link = "//www.youtube.com/embed/" + videoID;
       var str = JSON.stringify(response.result);
       data = JSON.parse(request.responseText);
       document.getElementById("search-container").innerHTML = "<iframe width="480" height="360" src=link frameborder="0" allowfullscreen></iframe>";
