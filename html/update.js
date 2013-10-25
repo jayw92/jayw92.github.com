@@ -33,6 +33,6 @@ function search() {
       newHTML = newHTML + "<p>Comment Count: " + v_CommentCount + "</p>";
       thumbnailHTML = "<img class=\"img-circle\" src=\""+ v_Thumb_URL +"\" data-src=\"holder.js/140x140\" alt=\"Thumbnail\">";
       document.getElementById("search-container").innerHTML = newHTML;
-      document.getElementById("VideoPic").innerHTML = newHTML;
+      document.getElementById("VideoPic").innerHTML = thumbnailHTML;
    });
 }
