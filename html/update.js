@@ -23,17 +23,16 @@ function search() {
       v_DislikeCount = data['items'][0]['statistics']['dislikeCount'];
       v_FavoriteCount = data['items'][0]['statistics']['favoriteCount'];
       v_CommentCount = data['items'][0]['statistics']['commentCount'];
-      newHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
-      thumbnailHTML = "<img src=\""+ v_Thumb_URL +"\" width=\"120\" height=\"90\" alt=\"Thumbnail\">";
-      newHTML = newHTML + "<h3>Title: " + v_Title + "</h3>";
-      newHTML = newHTML + "<h4>Description: " + v_Description + "</h4>";
-      newHTML = newHTML + thumbnailHTML;
+      videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
+      thumbnailHTML = "<p><img src=\""+ v_Thumb_URL +"\" width=\"120\" height=\"90\" alt=\"Thumbnail\"></p>";
+      newHTML = thumbnailHTML + "<h3>Title: " + v_Title + "</h3>";
+      newHTML = newHTML + "<h5>Description: " + v_Description + "</h5>";
       newHTML = newHTML + "<p>View Count: " + v_ViewCount + "</p>";
       newHTML = newHTML + "<p>Like Count: " + v_LikeCount + "</p>";
       newHTML = newHTML + "<p>Dislike Count: " + v_DislikeCount + "</p>";
       newHTML = newHTML + "<p>Favorite Count: " + v_FavoriteCount + "</p>";
       newHTML = newHTML + "<p>Comment Count: " + v_CommentCount + "</p>";
       document.getElementById("search-container").innerHTML = newHTML;
-      document.getElementById("VideoPic").innerHTML = thumbnailHTML;
+      document.getElementById("VideoPic").innerHTML = videoHTML;
    });
 }
