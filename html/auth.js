@@ -1,4 +1,3 @@
-
 // The client id is obtained from the Google APIs Console at https://code.google.com/apis/console
 // If you run access this code from a server other than http://localhost, you need to register
 // your own client id.
@@ -54,4 +53,3 @@ function loadAPIClientInterfaces() {
     handleAPILoaded();
   });
 }
-
