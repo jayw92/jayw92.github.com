@@ -1,18 +1,21 @@
 // Once the api loads call enable the search box.
 function handleAPILoaded() {
-  $('#search-button').attr('disabled', false);
+   $('#search-button').attr('disabled', false);
 }
 
 // Search for a given string.
 function search() {
-  var videoID = $('#vidId').val();
-  var request = gapi.client.youtube.videos.list({
-    id: videoID,
-    part: 'snippet'
-  });
+   var videoID = $('#vidId').val();
+   var request = gapi.client.youtube.videos.list({
+      id: videoID,
+      part: 'snippet'
+   });
 
-  request.execute(function(response) {
-    var str = JSON.stringify(response.result);
-    $('#search-container').html('<pre>' + str + '</pre>');
-  });
+   request.execute(function(response) {
+      var link = "//www.youtube.com/embed/" + videoID
+      var str = JSON.stringify(response.result);
+      data = JSON.parse(request.responseText);
+
+      $('#search-container').html(<iframe width="480" height="360" src=link frameborder="0" allowfullscreen></iframe>);
+   });
 }
