@@ -15,7 +15,8 @@ function search() {
       link = "//www.youtube.com/embed/" + videoID;
       var str = JSON.stringify(response.result);
       data = JSON.parse(request.responseText);
-      newHTML = "<iframe width=\"480\" height=\"360\" src=" + link+ " frameborder=\"0\" allowfullscreen></iframe>";
+      newHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
+
       document.getElementById("search-container").innerHTML = newHTML;
    });
 }
