@@ -8,7 +8,7 @@ function search() {
     videoID = $('#vidId').val();
     var request = gapi.client.youtube.videos.list({
         id: videoID,
-        part: 'snippet,statistics,status'
+        part: 'snippet,statistics,status,fileDetails,processingDetails,suggestions'
     });
 
     request.execute(function(response) {
@@ -124,8 +124,6 @@ function search() {
     newHTML = newHTML + "<p>Processing Warnings(Causes difficulties in processing): " + v_ProcessingWarnings.toString() + "</p>";
     newHTML = newHTML + "<p>Processing Hints(Hints for improving processing of video): " + v_ProcessingHints.toString() + "</p>";
     newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
-
-
 
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
