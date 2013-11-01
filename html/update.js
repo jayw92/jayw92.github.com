@@ -24,13 +24,13 @@ function updateVideo() {
 // SEARCH FUNCTION
 function search() {
     videoID = $('#vidId').val();
+    link = "//www.youtube.com/embed/" + videoID;
     var request = gapi.client.youtube.videos.list({
         id: videoID,
         part: 'snippet,statistics,status,fileDetails,processingDetails,suggestions'
     });
 
     request.execute(function(response) {
-        link = "//www.youtube.com/embed/" + videoID;
         str = JSON.stringify(response.result);
         data = JSON.parse(str);
     });
@@ -81,8 +81,9 @@ function search() {
     categoryRequest.execute(function(res) {
         str2 = JSON.stringify(res.result);
         snip = JSON.parse(str2);
-        v_CategoryTitle = snip['snippet']['title'];
     });
+    
+    v_CategoryTitle = snip['items'][0]['snippet']['title'];
 
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img src=\"" + v_Thumb_URL + "\" width=\"120\" height=\"90\" alt=\"Thumbnail\"></p>";
