@@ -111,7 +111,7 @@ function addSearchHTML() {
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img src=\"" + v_Thumb_URL + "\" width=\"120\" height=\"90\" alt=\"Thumbnail\"></p>";
     newHTML = thumbnailHTML + "<h3>Title: " + v_Title + "</h3>";
-    newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input id=\"c_Title\" type=\"text\" value=" + v_Title + "/></p>";
+    newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input id=\"c_Title\" type=\"text\" value=\"" + v_Title + "\"></p>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
     var index = 0;
     var categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
