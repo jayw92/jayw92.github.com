@@ -1,7 +1,6 @@
 // Once the api loads call enable the search box.
 function handleAPILoaded() {
     $('#search-button').attr('disabled', false);
-    $('#update-button').attr('disabled', false);
 }
 
 // GLOBAL VARIABLES
@@ -18,7 +17,6 @@ var c_Title;
 // UPDATE VIDEO FUNCTION
 
 function updateVideo() {
-    search();
     c_Title = $('#c_Title').val();
     var request = gapi.client.youtube.videos.update({
         part: 'snippet',
@@ -103,7 +101,6 @@ function search() {
             addSearchHTML();
         });
     });
-
 }
 
 function addSearchHTML() {
@@ -174,4 +171,6 @@ function addSearchHTML() {
 
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
+
+    $('#update-button').attr('disabled', false);
 }
