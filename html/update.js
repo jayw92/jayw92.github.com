@@ -1,11 +1,20 @@
 // Once the api loads call enable the search box.
 function handleAPILoaded() {
     $('#search-button').attr('disabled', false);
+    $('#update-button').attr('disabled', false);
 }
 
-// Search for a given string.
-var link, data, snippet, snip, statistics, status, fileDetails, processingDetails, suggestions, v_CategoryId;
+// GLOBAL VARIABLES
+var videoID, link, data, snippet, snip, statistics, status, fileDetails, processingDetails, suggestions;
+var v_BitrateBps, v_CategoryId, v_CategoryTitle, v_CommentCount, v_CreationTime, v_Description;
+var v_DislikeCount, v_DurationMs, v_FailureReason, v_FavoriteCount, v_FileName, v_FileSize, v_FileType;
+var v_License, v_LikeCount, v_PartsProcessed, v_PartsProcessedPercent, v_PartsTotal, v_PrivacyStatus;
+var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarnings, v_processingFailureReason;
+var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
+var v_UploadStatus, v_ViewCount;
+var videoHTML, newHTML;
 
+// SEARCH FUNCTION
 function search() {
     videoID = $('#vidId').val();
     var request = gapi.client.youtube.videos.list({
