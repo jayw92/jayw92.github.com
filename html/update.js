@@ -94,7 +94,8 @@ function addSearchHTML() {
     newHTML = thumbnailHTML + "<h3>Title: " + v_Title + "</h3>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
     newHTML = newHTML + "<p>Description: " + v_Description + "</p>";
-    newHTML = newHTML + "<p>Tags: " + v_TagsList.toString() + "</p>";
+    if (typeof v_TagsList !== "undefined")
+        newHTML = newHTML + "<p>Tags: " + v_TagsList.toString() + "</p>";
 
     newHTML = newHTML + "<h4>[STATISICS]</h4>";
     newHTML = newHTML + "<p>View Count: " + v_ViewCount + "</p>";
@@ -142,10 +143,14 @@ function addSearchHTML() {
     }
 
     newHTML = newHTML + "<h4>[VIDEO SUGGESTIONS]</h4>";
-    newHTML = newHTML + "<p>Processing Erros(Causes a failed upload): " + v_ProcessingErrors.toString() + "</p>";
-    newHTML = newHTML + "<p>Processing Warnings(Causes difficulties in processing): " + v_ProcessingWarnings.toString() + "</p>";
-    newHTML = newHTML + "<p>Processing Hints(Hints for improving processing of video): " + v_ProcessingHints.toString() + "</p>";
-    newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
+    if (typeof v_ProcessingErrors !== "undefined")
+        newHTML = newHTML + "<p>Processing Erros(Causes a failed upload): " + v_ProcessingErrors.toString() + "</p>";
+    if (typeof v_ProcessingWarnings !== "undefined")
+        newHTML = newHTML + "<p>Processing Warnings(Causes difficulties in processing): " + v_ProcessingWarnings.toString() + "</p>";
+    if (typeof v_ProcessingHints !== "undefined")
+        newHTML = newHTML + "<p>Processing Hints(Hints for improving processing of video): " + v_ProcessingHints.toString() + "</p>";
+    if (typeof v_TagSuggestions !== "undefined")
+        newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
 
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
