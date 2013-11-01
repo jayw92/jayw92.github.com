@@ -13,7 +13,7 @@ var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_tim
 var v_UploadStatus, v_ViewCount;
 var videoHTML, newHTML, str, str2;
 var c_Title, u_str, updateRequest;
-
+var CategoryTitleReturn;
 // UPDATE VIDEO FUNCTION
 
 function updateVideo() {
@@ -43,81 +43,93 @@ function search() {
         id: videoID,
         part: 'snippet,statistics,status,fileDetails,processingDetails,suggestions'
     });
-
     request.execute(function(response) {
         str = JSON.stringify(response.result);
         data = JSON.parse(str);
-
         snippet = data['items'][0]['snippet'];
         statistics = data['items'][0]['statistics'];
         status = data['items'][0]['status'];
         fileDetails = data['items'][0]['fileDetails'];
         processingDetails = data['items'][0]['processingDetails'];
         suggestions = data['items'][0]['suggestions'];
-
         v_Title = snippet['title'];
         v_Description = snippet['description'];
         v_Thumb_URL = snippet['thumbnails']['default']['url'];
         v_CategoryId = snippet['categoryId'];
         v_TagsList = snippet['tags'];
-
         v_ViewCount = statistics['viewCount'];
         v_CommentCount = statistics['commentCount'];
         v_FavoriteCount = statistics['favoriteCount'];
         v_LikeCount = statistics['likeCount'];
         v_DislikeCount = statistics['dislikeCount'];
-
         v_PrivacyStatus = status['privacyStatus'];
         v_UploadStatus = status['uploadStatus'];
         v_License = status['license'];
-
         v_FileName = fileDetails['fileName'];
         v_FileSize = fileDetails['fileSize'];
         v_FileType = fileDetails['fileType'];
         v_DurationMs = fileDetails['durationMs'];
         v_BitrateBps = fileDetails['bitrateBps'];
         v_CreationTime = fileDetails['creationTime'];
-
         v_ProcessingStatus = processingDetails['processingStatus'];
-
         v_ProcessingErrors = suggestions['processingErrors'];
         v_ProcessingWarnings = suggestions['processingWarnings'];
         v_ProcessingHints = suggestions['processingHints'];
         v_TagSuggestions = suggestions['tagSuggestions'];
-
         var categoryRequest = gapi.client.youtube.videoCategories.list({
             id: v_CategoryId,
             part: 'snippet'
         });
-
         categoryRequest.execute(function(res) {
             str2 = JSON.stringify(res.result);
             snip = JSON.parse(str2);
             v_CategoryTitle = snip['items'][0]['snippet']['title'];
-
             addSearchHTML();
         });
+    });
+}
+
+function getCategoryTitle(id) {
+    var categoryTitleRequest = gapi.client.youtube.videoCategories.list({
+        id: id.toString(),
+        part: 'snippet'
+    });
+    categoryTitleRequest.execute(function(res) {
+        str2 = JSON.stringify(res.result);
+        var cateSnip = JSON.parse(str2);
+        CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
     });
 }
 
 function addSearchHTML() {
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img src=\"" + v_Thumb_URL + "\" width=\"120\" height=\"90\" alt=\"Thumbnail\"></p>";
-
     newHTML = thumbnailHTML + "<h3>Title: " + v_Title + "</h3>";
-    newHTML = newHTML + "<input id=\"c_Title\" type=\"text\"/>";
+    newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input id=\"c_Title\" type=\"text\" value=" + v_Title + "/></p>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
+    var index = 0;
+    var categoryDropdownHTML = "<p>Select Category: <select id=\"c_CategoryTitle\">\n";
+    getCategoryTitle(index);
+    while (typeof CategoryTitleReturn !== "undefined") {
+        categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + index + "\">" + CategoryTitleReturn + "</option>\n";
+        index++;
+        getCategoryTitle(index);
+    }
+    categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
     newHTML = newHTML + "<p>Description: " + v_Description + "</p>";
-    if (typeof v_TagsList !== "undefined")
+    newHTML = newHTML + "<p class=\"updatefield\">Update Description: <textarea id=\"c_Description\" row=\"5\" cols=\"60\">" + v_Description + "</textarea></p>";
+    if (typeof v_TagsList !== "undefined") {
         newHTML = newHTML + "<p>Tags: " + v_TagsList.toString() + "</p>";
-
+        newHTML = newHTML + "<p class=\"updatefield\">Update Tags: <textarea id=\"c_TagsList\" row=\"3\" cols=\"40\">" + v_TagsList.toString() + "</textarea></p>";
+    }
+    else
+        newHTML = newHTML + "<p class=\"updatefield\">Add Tags: <textarea id=\"c_TagsList\" row=\"5\" cols=\"60\"></textarea></p>";
     newHTML = newHTML + "<h4>[STATISICS]</h4>";
     newHTML = newHTML + "<p>View Count: " + v_ViewCount + "</p>";
     newHTML = newHTML + "<p>Like Count: " + v_LikeCount + "</p>";
     newHTML = newHTML + "<p>Dislike Count: " + v_DislikeCount + "</p>";
     newHTML = newHTML + "<p>Favorite Count: " + v_FavoriteCount + "</p>";
     newHTML = newHTML + "<p>Comment Count: " + v_CommentCount + "</p>";
-
     newHTML = newHTML + "<h4>[STATUS]</h4>";
     newHTML = newHTML + "<p>Privacy Status: " + v_PrivacyStatus + "</p>";
     newHTML = newHTML + "<p>Upload Status: " + v_UploadStatus + "</p>";
@@ -130,7 +142,6 @@ function addSearchHTML() {
         newHTML = newHTML + "<p>REJECTION REASON: " + v_RejectionReason + "</p>";
     }
     newHTML = newHTML + "<p>License Status: " + v_License + "</p>";
-
     newHTML = newHTML + "<h4>[FILE DETAILS]</h4>";
     newHTML = newHTML + "<p>File Name: " + v_FileName + "</p>";
     newHTML = newHTML + "<p>File Size: " + v_FileSize + "</p>";
@@ -138,7 +149,6 @@ function addSearchHTML() {
     newHTML = newHTML + "<p>Duration: " + v_DurationMs / 1000 + " seconds</p>";
     newHTML = newHTML + "<p>Bitrate: " + v_BitrateBps + " bps (bits per second)</p>";
     newHTML = newHTML + "<p>Date Created: " + v_CreationTime + "</p>";
-
     newHTML = newHTML + "<h4>[VIDEO PROCESSING]</h4>";
     newHTML = newHTML + "<p>Processing Status: " + v_ProcessingStatus + "</p>";
     if (v_ProcessingStatus === 'failed') {
@@ -165,9 +175,7 @@ function addSearchHTML() {
         newHTML = newHTML + "<p>Processing Hints (Hints for improving processing of video): " + v_ProcessingHints.toString() + "</p>";
     if (typeof v_TagSuggestions !== "undefined")
         newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
-
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
-
     $('#update-button').attr('disabled', false);
 }
