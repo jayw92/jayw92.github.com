@@ -12,7 +12,7 @@ var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarni
 var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
 var v_UploadStatus, v_ViewCount;
 var videoHTML, newHTML, str, str2;
-var c_Title, u_str;
+var c_Title, u_str, updateRequest;
 
 // UPDATE VIDEO FUNCTION
 
@@ -21,7 +21,7 @@ function updateVideo() {
     snippet['title'] = c_Title;
     var updaterequest = gapi.client.youtube.videos.update({
         part: 'snippet',
-        resource: {id:videoID, snippet:snippet}
+        resource: {id: videoID, snippet: snippet}
     });
     updaterequest.execute(function(u_response) {
         var u_result = u_response.result;
@@ -33,7 +33,6 @@ function updateVideo() {
             $('#error-update').html('Could not update video details.');
         }
     });
-
 }
 
 // SEARCH FUNCTION
