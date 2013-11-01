@@ -18,7 +18,7 @@ var c_Title;
 
 function updateVideo() {
     c_Title = $('#c_Title').val();
-    var request = gapi.client.youtube.videos.update({
+    var updaterequest = gapi.client.youtube.videos.update({
         part: 'snippet',
         resource: {
             id: videoID,
@@ -27,9 +27,9 @@ function updateVideo() {
             }
         }
     });
-    request.execute(function(response) {
-        var result = response.result;
-        if (result) {
+    updaterequest.execute(function(response) {
+        var u_result = response.result;
+        if (u_result) {
             $('#error-update').html('Updated video details.');
         } else {
             $('#error-update').html('Could not update video details.');
