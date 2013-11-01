@@ -11,9 +11,9 @@ var v_License, v_LikeCount, v_PartsProcessed, v_PartsProcessedPercent, v_PartsTo
 var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarnings, v_processingFailureReason;
 var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
 var v_UploadStatus, v_ViewCount;
-var videoHTML, newHTML, str, str2;
+var videoHTML, newHTML, str, str2, str3;
 var c_Title, u_str, updateRequest;
-var CategoryTitleReturn;
+var cateSnip, CategoryTitleReturn;
 // UPDATE VIDEO FUNCTION
 
 function updateVideo() {
@@ -95,8 +95,8 @@ function getCategoryTitle(id) {
         part: 'snippet'
     });
     categoryTitleRequest.execute(function(res) {
-        str2 = JSON.stringify(res.result);
-        cateSnip = JSON.parse(str2);
+        str3 = JSON.stringify(res.result);
+        cateSnip = JSON.parse(str3);
         CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
         console.log(CategoryTitleReturn);
     });
