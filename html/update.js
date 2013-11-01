@@ -21,7 +21,7 @@ var cateSnip, CategoryTitleReturn;
 function updateVideo() {
     c_Title = $('#c_Title').val();
     c_Description = $('#c_Description').val();
-    c_TagsList = $('#c_TagsList').val().split(" ");
+    c_TagsList = $('#c_TagsList').val().split(",");
     snippet['title'] = c_Title;
     snippet['description'] = c_Description;
     snippet['tags'] = c_TagsList;
@@ -127,7 +127,7 @@ function addSearchHTML() {
     newHTML = newHTML + "<p class=\"updatefield\">Update Description: <textarea id=\"c_Description\" row=\"5\" cols=\"60\">" + v_Description + "</textarea></p>";
     if (typeof v_TagsList !== "undefined") {
         newHTML = newHTML + "<p>Tags: " + v_TagsList.toString() + "</p>";
-        newHTML = newHTML + "<p class=\"updatefield\">Update Tags: <textarea id=\"c_TagsList\" row=\"3\" cols=\"40\">" + v_TagsList.toString() + "</textarea></p>";
+        newHTML = newHTML + "<p class=\"updatefield\">Update Tags (Separte using commas[,]): <textarea id=\"c_TagsList\" row=\"3\" cols=\"40\">" + v_TagsList.toString() + "</textarea></p>";
     }
     else
         newHTML = newHTML + "<p class=\"updatefield\">Add Tags: <textarea id=\"c_TagsList\" row=\"5\" cols=\"60\"></textarea></p>";
