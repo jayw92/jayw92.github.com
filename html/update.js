@@ -4,6 +4,8 @@ function handleAPILoaded() {
 }
 
 // Search for a given string.
+var link, data, snippet, snip, statistics, status, fileDetails, processingDetails, suggestions, v_CategoryId;
+
 function search() {
     videoID = $('#vidId').val();
     var request = gapi.client.youtube.videos.list({
@@ -54,7 +56,7 @@ function search() {
         v_TagSuggestions = suggestions['tagSuggestions'];
 
     });
-    
+
     var categoryRequest = gapi.client.youtube.videoCategories.list({
         id: v_CategoryId,
         part: 'snippet'
