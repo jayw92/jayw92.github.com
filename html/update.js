@@ -25,6 +25,7 @@ function updateVideo() {
     });
     updaterequest.execute(function(u_response) {
         var u_result = u_response.result;
+        console.log(u_result);
         u_str = JSON.stringify(u_response.result);
         if (u_result) {
             $('#error-update').html('Updated video details.');
