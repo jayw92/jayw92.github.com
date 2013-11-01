@@ -25,7 +25,6 @@ function updateVideo() {
     });
     updateRequest.execute(function(u_response) {
         var u_result = u_response.result;
-        console.log(u_response);
         u_str = JSON.stringify(u_response.result);
         if (u_result) {
             $('#error-update').html('Updated video details.');
@@ -91,7 +90,7 @@ function search() {
 
 function getCategoryTitle(id) {
     var categoryTitleRequest = gapi.client.youtube.videoCategories.list({
-        id: id,
+        id: ""+id,
         part: 'snippet'
     });
     categoryTitleRequest.execute(function(res) {
