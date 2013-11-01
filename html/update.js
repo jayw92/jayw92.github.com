@@ -55,7 +55,7 @@ function search() {
 
     });
     
-    var categoryRequest = gapi.client.youtube.videoCategories({
+    var categoryRequest = gapi.client.youtube.videoCategories.list({
         id: v_CategoryId,
         part: 'snippet'
     });
