@@ -12,7 +12,7 @@ var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarni
 var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
 var v_UploadStatus, v_ViewCount;
 var videoHTML, newHTML, str, str2;
-var c_Title;
+var c_Title, u_str;
 
 // UPDATE VIDEO FUNCTION
 
@@ -27,8 +27,9 @@ function updateVideo() {
             }
         }
     });
-    updaterequest.execute(function(response) {
-        var u_result = response.result;
+    updaterequest.execute(function(u_response) {
+        var u_result = u_response.result;
+        u_str = JSON.stringify(u_response.result);
         if (u_result) {
             $('#error-update').html('Updated video details.');
         } else {
