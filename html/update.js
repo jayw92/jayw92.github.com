@@ -20,8 +20,8 @@ var c_Title;
 function updateVideo() {
     search();
     c_Title = $('#c_Title').val();
-    var request = gapi.client.youtube.playlists.insert({
-        part: 'snippet,status',
+    var request = gapi.client.youtube.videos.update({
+        part: 'snippet',
         resource: {
             id: videoID,
             snippet: {
@@ -32,7 +32,7 @@ function updateVideo() {
     request.execute(function(response) {
         var result = response.result;
         if (result) {
-            search();
+            $('#error-update').html('Updated video details.');
         } else {
             $('#error-update').html('Could not update video details.');
         }
@@ -164,11 +164,11 @@ function addSearchHTML() {
 
     newHTML = newHTML + "<h4>[VIDEO SUGGESTIONS]</h4>";
     if (typeof v_ProcessingErrors !== "undefined")
-        newHTML = newHTML + "<p>Processing Erros(Causes a failed upload): " + v_ProcessingErrors.toString() + "</p>";
+        newHTML = newHTML + "<p>Processing Erros (Causes a failed upload): " + v_ProcessingErrors.toString() + "</p>";
     if (typeof v_ProcessingWarnings !== "undefined")
-        newHTML = newHTML + "<p>Processing Warnings(Causes difficulties in processing): " + v_ProcessingWarnings.toString() + "</p>";
+        newHTML = newHTML + "<p>Processing Warnings (Causes difficulties in processing): " + v_ProcessingWarnings.toString() + "</p>";
     if (typeof v_ProcessingHints !== "undefined")
-        newHTML = newHTML + "<p>Processing Hints(Hints for improving processing of video): " + v_ProcessingHints.toString() + "</p>";
+        newHTML = newHTML + "<p>Processing Hints (Hints for improving processing of video): " + v_ProcessingHints.toString() + "</p>";
     if (typeof v_TagSuggestions !== "undefined")
         newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
 
