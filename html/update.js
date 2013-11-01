@@ -18,14 +18,10 @@ var c_Title, u_str;
 
 function updateVideo() {
     c_Title = $('#c_Title').val();
+    data['items'][0]['snippet']['title'] = c_Title;
     var updaterequest = gapi.client.youtube.videos.update({
         part: 'snippet',
-        resource: {
-            id: videoID,
-            snippet: {
-                title: c_Title
-            }
-        }
+        resource: data
     });
     updaterequest.execute(function(u_response) {
         var u_result = u_response.result;
