@@ -13,11 +13,30 @@ var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarni
 var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
 var v_UploadStatus, v_ViewCount;
 var videoHTML, newHTML, str, str2;
+var c_Title;
 
 // UPDATE VIDEO FUNCTION
 
 function updateVideo() {
-    videoID = $('#vidId').val();
+    search();
+    c_Title = $('#c_Title').val();
+    var request = gapi.client.youtube.playlists.insert({
+        part: 'snippet,status',
+        resource: {
+            id: videoID,
+            snippet: {
+                title: c_Title
+            }
+        }
+    });
+    request.execute(function(response) {
+        var result = response.result;
+        if (result) {
+            search();
+        } else {
+            $('#error-update').html('Could not update video details.');
+        }
+    });
 
 }
 
@@ -92,6 +111,7 @@ function addSearchHTML() {
     thumbnailHTML = "<p><img src=\"" + v_Thumb_URL + "\" width=\"120\" height=\"90\" alt=\"Thumbnail\"></p>";
 
     newHTML = thumbnailHTML + "<h3>Title: " + v_Title + "</h3>";
+    newHTML = newHTML + "<input id=\"c_Title\" type=\"text\"/>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
     newHTML = newHTML + "<p>Description: " + v_Description + "</p>";
     if (typeof v_TagsList !== "undefined")
