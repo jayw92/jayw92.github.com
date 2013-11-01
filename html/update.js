@@ -12,7 +12,14 @@ var v_License, v_LikeCount, v_PartsProcessed, v_PartsProcessedPercent, v_PartsTo
 var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarnings, v_processingFailureReason;
 var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
 var v_UploadStatus, v_ViewCount;
-var videoHTML, newHTML;
+var videoHTML, newHTML, str, str2;
+
+// UPDATE VIDEO FUNCTION
+
+function updateVideo() {
+    videoID = $('#vidId').val();
+
+}
 
 // SEARCH FUNCTION
 function search() {
@@ -24,7 +31,7 @@ function search() {
 
     request.execute(function(response) {
         link = "//www.youtube.com/embed/" + videoID;
-        var str = JSON.stringify(response.result);
+        str = JSON.stringify(response.result);
         data = JSON.parse(str);
 
         snippet = data['items'][0]['snippet'];
@@ -72,8 +79,8 @@ function search() {
     });
 
     categoryRequest.execute(function(response) {
-        var str = JSON.stringify(response.result);
-        snip = JSON.parse(str);
+        str2 = JSON.stringify(response.result);
+        snip = JSON.parse(str2);
         v_CategoryTitle = snip['snippet']['title'];
     });
 
