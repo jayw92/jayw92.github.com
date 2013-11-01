@@ -91,13 +91,14 @@ function search() {
 
 function getCategoryTitle(id) {
     var categoryTitleRequest = gapi.client.youtube.videoCategories.list({
-        id: id.toString(),
+        id: id,
         part: 'snippet'
     });
     categoryTitleRequest.execute(function(res) {
         str2 = JSON.stringify(res.result);
-        var cateSnip = JSON.parse(str2);
+        cateSnip = JSON.parse(str2);
         CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
+        console.log(CategoryTitleReturn);
     });
 }
 
