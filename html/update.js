@@ -12,13 +12,19 @@ var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarni
 var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
 var v_UploadStatus, v_ViewCount;
 var videoHTML, newHTML, str, str2, str3;
-var c_Title, u_str, updateRequest;
+var u_str, updateRequest;
+var c_CategoryId, c_Description, c_License, c_PrivacyStatus, c_TagsList, c_Title;
+
 var cateSnip, CategoryTitleReturn;
 // UPDATE VIDEO FUNCTION
 
 function updateVideo() {
     c_Title = $('#c_Title').val();
+    c_Description = $('#c_Description').val();
+    c_TagsList = $('#c_TagsList').val();
     snippet['title'] = c_Title;
+    snippet['description'] = c_Description;
+    snippet['tags'] = c_TagsList;
     updateRequest = gapi.client.youtube.videos.update({
         part: 'snippet',
         resource: {id: videoID, snippet: snippet}
@@ -90,7 +96,7 @@ function search() {
 
 function getCategoryTitle(id) {
     var categoryTitleRequest = gapi.client.youtube.videoCategories.list({
-        id: ""+id,
+        id: "" + id,
         part: 'snippet'
     });
     categoryTitleRequest.execute(function(res) {
@@ -108,7 +114,7 @@ function addSearchHTML() {
     newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input id=\"c_Title\" type=\"text\" value=" + v_Title + "/></p>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
     var index = 0;
-    var categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryTitle\">\n";
+    var categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
     getCategoryTitle(index);
     while (typeof CategoryTitleReturn !== "undefined") {
         categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + index + "\">" + CategoryTitleReturn + "</option>\n";
