@@ -62,7 +62,7 @@ function search() {
 
     categoryRequest.execute(function(response) {
         var str = JSON.stringify(response.result);
-        var snip = JSON.parse(str);
+        snip = JSON.parse(str);
         v_CategoryTitle = snip['snippet']['title'];
     });
 
