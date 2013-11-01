@@ -33,53 +33,53 @@ function search() {
         link = "//www.youtube.com/embed/" + videoID;
         str = JSON.stringify(response.result);
         data = JSON.parse(str);
-
-        snippet = data['items'][0]['snippet'];
-        statistics = data['items'][0]['statistics'];
-        status = data['items'][0]['status'];
-        fileDetails = data['items'][0]['fileDetails'];
-        processingDetails = data['items'][0]['processingDetails'];
-        suggestions = data['items'][0]['suggestions'];
-
-        v_Title = snippet['title'];
-        v_Description = snippet['description'];
-        v_Thumb_URL = snippet['thumbnails']['default']['url'];
-        v_CategoryId = snippet['categoryId'];
-        v_TagsList = snippet['tags'];
-
-        v_ViewCount = statistics['viewCount'];
-        v_CommentCount = statistics['commentCount'];
-        v_FavoriteCount = statistics['favoriteCount'];
-        v_LikeCount = statistics['likeCount'];
-        v_DislikeCount = statistics['dislikeCount'];
-
-        v_PrivacyStatus = status['privacyStatus'];
-        v_UploadStatus = status['uploadStatus'];
-        v_License = status['license'];
-
-        v_FileName = fileDetails['fileName'];
-        v_FileSize = fileDetails['fileSize'];
-        v_FileType = fileDetails['fileType'];
-        v_DurationMs = fileDetails['durationMs'];
-        v_BitrateBps = fileDetails['bitrateBps'];
-        v_CreationTime = fileDetails['creationTime'];
-
-        v_ProcessingStatus = processingDetails['processingStatus'];
-
-        v_ProcessingErrors = suggestions['processingErrors'];
-        v_ProcessingWarnings = suggestions['processingWarnings'];
-        v_ProcessingHints = suggestions['processingHints'];
-        v_TagSuggestions = suggestions['tagSuggestions'];
-
     });
+
+
+    snippet = data['items'][0]['snippet'];
+    statistics = data['items'][0]['statistics'];
+    status = data['items'][0]['status'];
+    fileDetails = data['items'][0]['fileDetails'];
+    processingDetails = data['items'][0]['processingDetails'];
+    suggestions = data['items'][0]['suggestions'];
+
+    v_Title = snippet['title'];
+    v_Description = snippet['description'];
+    v_Thumb_URL = snippet['thumbnails']['default']['url'];
+    v_CategoryId = snippet['categoryId'];
+    v_TagsList = snippet['tags'];
+
+    v_ViewCount = statistics['viewCount'];
+    v_CommentCount = statistics['commentCount'];
+    v_FavoriteCount = statistics['favoriteCount'];
+    v_LikeCount = statistics['likeCount'];
+    v_DislikeCount = statistics['dislikeCount'];
+
+    v_PrivacyStatus = status['privacyStatus'];
+    v_UploadStatus = status['uploadStatus'];
+    v_License = status['license'];
+
+    v_FileName = fileDetails['fileName'];
+    v_FileSize = fileDetails['fileSize'];
+    v_FileType = fileDetails['fileType'];
+    v_DurationMs = fileDetails['durationMs'];
+    v_BitrateBps = fileDetails['bitrateBps'];
+    v_CreationTime = fileDetails['creationTime'];
+
+    v_ProcessingStatus = processingDetails['processingStatus'];
+
+    v_ProcessingErrors = suggestions['processingErrors'];
+    v_ProcessingWarnings = suggestions['processingWarnings'];
+    v_ProcessingHints = suggestions['processingHints'];
+    v_TagSuggestions = suggestions['tagSuggestions'];
 
     var categoryRequest = gapi.client.youtube.videoCategories.list({
         id: v_CategoryId,
         part: 'snippet'
     });
 
-    categoryRequest.execute(function(response) {
-        str2 = JSON.stringify(response.result);
+    categoryRequest.execute(function(res) {
+        str2 = JSON.stringify(res.result);
         snip = JSON.parse(str2);
         v_CategoryTitle = snip['snippet']['title'];
     });
