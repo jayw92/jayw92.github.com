@@ -21,7 +21,7 @@ var cateSnip, CategoryTitleReturn;
 function updateVideo() {
     c_Title = $('#c_Title').val();
     c_Description = $('#c_Description').val();
-    c_TagsList = $('#c_TagsList').val();
+    c_TagsList = $('#c_TagsList').val().split(" ");
     snippet['title'] = c_Title;
     snippet['description'] = c_Description;
     snippet['tags'] = c_TagsList;
