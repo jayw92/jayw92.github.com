@@ -19,11 +19,11 @@ var c_Title, u_str, updateRequest;
 function updateVideo() {
     c_Title = $('#c_Title').val();
     snippet['title'] = c_Title;
-    var updaterequest = gapi.client.youtube.videos.update({
+    updateRequest = gapi.client.youtube.videos.update({
         part: 'snippet',
         resource: {id: videoID, snippet: snippet}
     });
-    updaterequest.execute(function(u_response) {
+    updateRequest.execute(function(u_response) {
         var u_result = u_response.result;
         console.log(u_response);
         u_str = JSON.stringify(u_response.result);
