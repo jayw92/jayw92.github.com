@@ -124,7 +124,7 @@ function addSearchHTML() {
     categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
     newHTML = newHTML + categoryDropdownHTML;
     newHTML = newHTML + "<p>Description: " + v_Description + "</p>";
-    newHTML = newHTML + "<p class=\"updatefield\">Update Description: <textarea id=\"c_Description\" row=\"5\" cols=\"60\">" + v_Description + "</textarea></p>";
+    newHTML = newHTML + "<p class=\"updatefield\">Update Description (Separte using commas[,]: <textarea id=\"c_Description\" row=\"5\" cols=\"60\">" + v_Description + "</textarea></p>";
     if (typeof v_TagsList !== "undefined") {
         newHTML = newHTML + "<p>Tags: " + v_TagsList.toString() + "</p>";
         newHTML = newHTML + "<p class=\"updatefield\">Update Tags (Separte using commas[,]): <textarea id=\"c_TagsList\" row=\"3\" cols=\"40\">" + v_TagsList.toString() + "</textarea></p>";
