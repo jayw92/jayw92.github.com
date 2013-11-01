@@ -70,21 +70,24 @@ function search() {
         v_ProcessingWarnings = suggestions['processingWarnings'];
         v_ProcessingHints = suggestions['processingHints'];
         v_TagSuggestions = suggestions['tagSuggestions'];
+
+        var categoryRequest = gapi.client.youtube.videoCategories.list({
+            id: v_CategoryId,
+            part: 'snippet'
+        });
+
+        categoryRequest.execute(function(res) {
+            str2 = JSON.stringify(res.result);
+            snip = JSON.parse(str2);
+            v_CategoryTitle = snip['items'][0]['snippet']['title'];
+
+            addSearchHTML();
+        });
     });
 
+}
 
-    var categoryRequest = gapi.client.youtube.videoCategories.list({
-        id: v_CategoryId,
-        part: 'snippet'
-    });
-
-    categoryRequest.execute(function(res) {
-        str2 = JSON.stringify(res.result);
-        snip = JSON.parse(str2);
-        v_CategoryTitle = snip['items'][0]['snippet']['title'];
-    });
-
-
+function addSearchHTML() {
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img src=\"" + v_Thumb_URL + "\" width=\"120\" height=\"90\" alt=\"Thumbnail\"></p>";
 
