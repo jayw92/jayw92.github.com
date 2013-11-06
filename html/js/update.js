@@ -33,9 +33,9 @@ function updateVideo() {
         var u_result = u_response.result;
         u_str = JSON.stringify(u_response.result);
         if (u_result) {
-            $('#error-update').html('Updated video details.');
+            $('#error-update').html("<div class=\"alert alert-success\"><strong>Success!</strong> Updated video details.</div>");
         } else {
-            $('#error-update').html('Could not update video details.');
+            $('#error-update').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Could not update video details.</div>");
         }
     });
 }
@@ -109,9 +109,12 @@ function getCategoryTitle(id) {
 
 function addSearchHTML() {
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
-    thumbnailHTML = "<p><img src=\"" + v_Thumb_URL + "\" width=\"120\" height=\"90\" alt=\"Thumbnail\"></p>";
-    newHTML = thumbnailHTML + "<h3>Title: " + v_Title + "</h3>";
-    newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input id=\"c_Title\" type=\"text\" value=\"" + v_Title + "\"></p>";
+    thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
+    newHTML = "<hr><div class=\"panel panel-primary\">";
+    newHTML = newHTML + "<div class=\"panel-heading\">" + v_Title + "</div>";
+    newHTML = newHTML + "<div class=\"panel-body\">";
+    newHTML = newHTML + thumbnailHTML;
+    newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input class=\"form-control\" id=\"c_Title\" type=\"text\" value=\"" + v_Title + "\"></p>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
     var index = 0;
     var categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
@@ -124,13 +127,13 @@ function addSearchHTML() {
     categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
     newHTML = newHTML + categoryDropdownHTML;
     newHTML = newHTML + "<p>Description: " + v_Description + "</p>";
-    newHTML = newHTML + "<p class=\"updatefield\">Update Description (Separte using commas[,]: <textarea id=\"c_Description\" row=\"5\" cols=\"60\">" + v_Description + "</textarea></p>";
+    newHTML = newHTML + "<p class=\"updatefield\">Update Description (Separte using commas[,]: <textarea class=\"form-control\" id=\"c_Description\" row=\"5\" cols=\"60\">" + v_Description + "</textarea></p>";
     if (typeof v_TagsList !== "undefined") {
         newHTML = newHTML + "<p>Tags: " + v_TagsList.toString() + "</p>";
-        newHTML = newHTML + "<p class=\"updatefield\">Update Tags (Separte using commas[,]): <textarea id=\"c_TagsList\" row=\"3\" cols=\"40\">" + v_TagsList.toString() + "</textarea></p>";
+        newHTML = newHTML + "<p class=\"updatefield\">Update Tags (Separte using commas[,]): <textarea class=\"form-control\" id=\"c_TagsList\" row=\"3\" cols=\"40\">" + v_TagsList.toString() + "</textarea></p>";
     }
     else
-        newHTML = newHTML + "<p class=\"updatefield\">Add Tags: <textarea id=\"c_TagsList\" row=\"5\" cols=\"60\"></textarea></p>";
+        newHTML = newHTML + "<p class=\"updatefield\">Add Tags: <textarea class=\"form-control\" id=\"c_TagsList\" row=\"5\" cols=\"60\"></textarea></p>";
     newHTML = newHTML + "<h4>[STATISICS]</h4>";
     newHTML = newHTML + "<p>View Count: " + v_ViewCount + "</p>";
     newHTML = newHTML + "<p>Like Count: " + v_LikeCount + "</p>";
@@ -182,6 +185,7 @@ function addSearchHTML() {
         newHTML = newHTML + "<p>Processing Hints (Hints for improving processing of video): " + v_ProcessingHints.toString() + "</p>";
     if (typeof v_TagSuggestions !== "undefined")
         newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
+    newHTML = newHTML + "</div></div>";
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
     $('#update-button').attr('disabled', false);
