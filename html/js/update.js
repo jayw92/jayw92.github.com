@@ -79,10 +79,12 @@ function search() {
             v_CreationTime = fileDetails['creationTime'];
         }
         v_ProcessingStatus = processingDetails['processingStatus'];
-        v_ProcessingErrors = suggestions['processingErrors'];
-        v_ProcessingWarnings = suggestions['processingWarnings'];
-        v_ProcessingHints = suggestions['processingHints'];
-        v_TagSuggestions = suggestions['tagSuggestions'];
+        if (typeof suggestions !== "undefined") {
+            v_ProcessingErrors = suggestions['processingErrors'];
+            v_ProcessingWarnings = suggestions['processingWarnings'];
+            v_ProcessingHints = suggestions['processingHints'];
+            v_TagSuggestions = suggestions['tagSuggestions'];
+        }
         var categoryRequest = gapi.client.youtube.videoCategories.list({
             id: v_CategoryId,
             part: 'snippet'
