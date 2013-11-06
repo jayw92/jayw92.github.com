@@ -152,13 +152,15 @@ function addSearchHTML() {
         newHTML = newHTML + "<p>REJECTION REASON: " + v_RejectionReason + "</p>";
     }
     newHTML = newHTML + "<p>License Status: " + v_License + "</p>";
-    newHTML = newHTML + "<h4>[FILE DETAILS]</h4>";
-    newHTML = newHTML + "<p>File Name: " + v_FileName + "</p>";
-    newHTML = newHTML + "<p>File Size: " + v_FileSize + "</p>";
-    newHTML = newHTML + "<p>File Type: " + v_FileType + "</p>";
-    newHTML = newHTML + "<p>Duration: " + v_DurationMs / 1000 + " seconds</p>";
-    newHTML = newHTML + "<p>Bitrate: " + v_BitrateBps + " bps (bits per second)</p>";
-    newHTML = newHTML + "<p>Date Created: " + v_CreationTime + "</p>";
+    if (typeof fileDetails !== "undefined") {
+        newHTML = newHTML + "<h4>[FILE DETAILS]</h4>";
+        newHTML = newHTML + "<p>File Name: " + v_FileName + "</p>";
+        newHTML = newHTML + "<p>File Size: " + v_FileSize + "</p>";
+        newHTML = newHTML + "<p>File Type: " + v_FileType + "</p>";
+        newHTML = newHTML + "<p>Duration: " + v_DurationMs / 1000 + " seconds</p>";
+        newHTML = newHTML + "<p>Bitrate: " + v_BitrateBps + " bps (bits per second)</p>";
+        newHTML = newHTML + "<p>Date Created: " + v_CreationTime + "</p>";
+    }
     newHTML = newHTML + "<h4>[VIDEO PROCESSING]</h4>";
     newHTML = newHTML + "<p>Processing Status: " + v_ProcessingStatus + "</p>";
     if (v_ProcessingStatus === 'failed') {
