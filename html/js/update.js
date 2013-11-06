@@ -115,7 +115,7 @@ function addSearchHTML() {
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
     newHTML = "<hr><div class=\"panel panel-primary\">";
-    newHTML = newHTML + "<div class=\"panel-heading\">" + v_Title + "</div>";
+    newHTML = newHTML + "<div class=\"panel-heading\"><h4>" + v_Title + "</h4></div>";
     newHTML = newHTML + "<div class=\"panel-body\">";
     newHTML = newHTML + thumbnailHTML;
     newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input class=\"form-control\" id=\"c_Title\" type=\"text\" value=\"" + v_Title + "\"></p>";
