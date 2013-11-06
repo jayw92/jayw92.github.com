@@ -112,6 +112,7 @@ function getCategoryTitle(id) {
 }
 
 function addSearchHTML() {
+    $('#error-update').html("");
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
     newHTML = "<hr><div class=\"panel panel-primary\">";
