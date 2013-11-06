@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../assets/ico/favicon.png">
+
+        <title>Youtube Capstone - Inbox & Comments</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="../dist/css/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="css/docs.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="../../assets/js/html5shiv.js"></script>
+          <script src="../../assets/js/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Custom styles for this template -->
+        <link href="../index.css" rel="stylesheet">
+        <script src="update.js"></script>
+    </head>
+    <!-- NAVBAR
+    ================================================== -->
+    <body>
+        
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Youtube Capstone</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">Dashboard</a></li>
+                        <li>
+                            <a href="#">Inbox</a>
+                        </li>
+                        <li><a href="#">Analytics</a></li>
+                        <li><a href="#">Video Defaults</a></li>
+                        <li><a href="#">Annotations</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li>
+                            <a href="#">Contact Us</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account name <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Settings</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Sign out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+
+        <div class="container col-lg">
+            <br><br><br>
+            <h2 class="text-center">Inbox & Comments</h2>
+            <hr>
+            <div class="row">
+                <div class="input-group col-md-7 col-md-offset-2">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-m btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row"><h4></h4></div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="list-group-sm">
+                        <h4>
+                            <a href="#" class="list-group-item active">
+                                <span class="badge pull-right">42</span>
+                                All
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <span class="badge pull-right">12</span>
+                                Only Comments
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <span class="badge pull-right">6</span>
+                                Only Messages
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <span class="badge pull-right">42</span>
+                                Newest
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <span class="badge pull-right">2</span>
+                                Top
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <span class="badge pull-right">1</span>
+                                Recent Videos
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="panel panel-primary">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">All</div>
+
+                        <div class="container">
+                            <div class="row"><h4></h4></div>
+
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h4>Inbox Message: Hey!
+                                    </h4>
+                                    <h5>From: <a>crazy</a></h5>
+                                </div>
+                                <div class="panel-body">
+                                    <h5>Sup I liked that video muhahah!</h5>
+                                </div>
+                                <div class="panel-footer">
+                                    <h5>Actions: <a>Delete</a> | <a>Reply</a> | <a>Mark as Read</a> | <a>Block User</a>
+                                        <label class="navbar-right"><input type="checkbox" value="1" > Select</label>
+                                    </h5>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h4>Inbox Message: Send me the goods!</h4>
+                                    <h5>From: <a>bossman</a></h5>
+                                </div>
+                                <div class="panel-body">
+                                    <h5>Yo I need the goods ASAP.</h5>
+                                </div>
+                                <div class="panel-footer">
+                                    <h5>Actions: <a>Delete</a> | <a>Reply</a> | <a>Mark as Read</a> | <a>Block User</a>
+                                        <label class="navbar-right"><input type="checkbox" value="1" > Select</label>
+                                    </h5>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <h4>Video comment on: <a>Ep1: Nutela time</a></h4>
+                                    <h5>From: <a>watcher146</a></h5>
+                                </div>
+                                <div class="panel-body">
+                                    <h5>K, ur reported.</h5>
+                                </div>
+                                <div class="panel-footer">
+                                    <h5>In Reply to: <a>troll555</a> </h5>
+                                    <h5>Actions: <a>Report Spam</a> | <a>Respond</a> | <a>Like</a> | <a>Dislike</a> | <a>Block User</a>
+                                        <label class="navbar-right"><input type="checkbox" value="1" > Select</label>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <h5 class="text-center">Selection Actions: <a>Report Spam</a> | <a>Respond</a> | <a>Like</a> | <a>Dislike</a> | <a>Block Users</a>
+                                <br><br>
+                                <button type="button" class="btn btn-sm btn-primary">Load More Messages</button>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>Filter Options</h4>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <div class="form-group">
+                                    Subscribers: 
+                                    <label id="amount1" style="border: 0; color: #f6931f; font-weight: bold;" ></label>
+                                    <div id="slider-subsc"></div>
+                                </div>
+                                <div class="form-group">
+                                    Length: 
+                                    <label id="amount2" style="border: 0; color: #f6931f; font-weight: bold;" ></label>
+                                    <div id="slider-length"></div>
+                                </div>
+                                <div class="form-group">
+                                    Rating: 
+                                    <label id="amount3" style="border: 0; color: #f6931f; font-weight: bold;" ></label>
+                                    <div id="slider-rate"></div>
+                                </div>
+                                <div class="form-group">
+                                    Dated since <input type="text" class="form-control" id="datepicker" />
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> Questions
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> Potential Spam
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> Potential Offensive
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> OP Responds
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> Firsts
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> My name mentioned
+                                    </label>
+                                </div>
+
+                            <h5 class="text-center">
+                                <button type="submit" class="btn btn-sm btn-primary">Apply Filters</button>
+                                <button type="button" class="btn btn-sm btn-primary">Reset Filters</button>
+                            </h5>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- FOOTER -->
+            <footer>
+                <hr>
+                <p class="pull-right"><a href="#">Back to top</a></p>
+                <p>&copy; Youtube Capstone 2013.</p>
+            </footer>
+
+            <!-- /.container -->
+        </div>
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="../assets/js/jquery.js"></script>
+        <script src="../dist/js/bootstrap.min.js"></script>
+        <script src="../assets/js/holder.js"></script> 
+        <!-- JQUERY UI SCRIPTS -->
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> 
+        <script>
+            $(function() {
+                $("#slider-length").slider({
+                    range: true,
+                    min: 0,
+                    max: 10000,
+                    values: [1000, 3000],
+                    slide: function(event, ui) {
+                        $("#amount2").html(ui.values[ 0 ] + " - " + ui.values[ 1 ] + " words");
+                    }
+                });
+                $("#amount2").html($("#slider-length").slider("values", 0) +
+                        " - " + $("#slider-length").slider("values", 1) + " words");
+            });
+        </script>
+        <script>
+            $(function() {
+                $("#slider-rate").slider({
+                    range: false,
+                    min: 1,
+                    max: 5,
+                    value: 3,
+                    slide: function(event, ui) {
+                        $("#amount3").html(ui.value);
+                    }
+                });
+                $("#amount3").html($("#slider-rate").slider("value"));
+            });
+        </script>
+        <script>
+            $(function() {
+                $("#slider-subsc").slider({
+                    range: true,
+                    min: 0,
+                    max: 5000000,
+                    values: [10000, 3000000],
+                    slide: function(event, ui) {
+                        $("#amount1").html(ui.values[ 0 ] + " - " + ui.values[ 1 ]);
+                    }
+                });
+                $("#amount1").html($("#slider-subsc").slider("values", 0) +
+                        " - " + $("#slider-subsc").slider("values", 1));
+            });
+        </script>
+        <script>
+            $(function() {
+                $("#datepicker").datepicker();
+            });
+        </script>
+    </body>
+</html>
