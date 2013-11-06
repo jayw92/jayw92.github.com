@@ -70,12 +70,14 @@ function search() {
         v_PrivacyStatus = status['privacyStatus'];
         v_UploadStatus = status['uploadStatus'];
         v_License = status['license'];
-        v_FileName = fileDetails['fileName'];
-        v_FileSize = fileDetails['fileSize'];
-        v_FileType = fileDetails['fileType'];
-        v_DurationMs = fileDetails['durationMs'];
-        v_BitrateBps = fileDetails['bitrateBps'];
-        v_CreationTime = fileDetails['creationTime'];
+        if (typeof fileDetails !== "undefined") {
+            v_FileName = fileDetails['fileName'];
+            v_FileSize = fileDetails['fileSize'];
+            v_FileType = fileDetails['fileType'];
+            v_DurationMs = fileDetails['durationMs'];
+            v_BitrateBps = fileDetails['bitrateBps'];
+            v_CreationTime = fileDetails['creationTime'];
+        }
         v_ProcessingStatus = processingDetails['processingStatus'];
         v_ProcessingErrors = suggestions['processingErrors'];
         v_ProcessingWarnings = suggestions['processingWarnings'];
