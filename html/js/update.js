@@ -1,6 +1,5 @@
 // Once the api loads call enable the search box.
 function handleAPILoaded() {
-    requestUserUploadsPlaylistId();
     $('#search-button').attr('disabled', false);
     var index = 0;
     categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
@@ -39,6 +38,7 @@ function getCategoryTitle(id) {
         }
         else {
             categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
+            requestUserUploadsPlaylistId();
         }
         console.log(CategoryTitleReturn);
     });
