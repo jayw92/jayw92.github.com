@@ -1,6 +1,6 @@
 // Once the api loads call enable the search box.
 function handleAPILoaded() {
-    $('#search-button').attr('disabled', false);
+//    $('#search-button').attr('disabled', false);
     var index = 0;
     categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
     getCategoryTitle(index);
@@ -130,15 +130,15 @@ function updateVideo() {
 
 // DISPLAY FOR VIDEO ITEM IN UPLOADS PLAYLIST
 function getvideoHTML(index) {
-    var Id = playlistItems[index].snippet.resourceId.videoId;
+    videoID = playlistItems[index].snippet.resourceId.videoId;
     index++;
     isDone = false;
     if (index === playlistItems.length) {
         isDone = true;
     }
-    link = "//www.youtube.com/embed/" + Id;
+    link = "//www.youtube.com/embed/" + videoID;
     var request = gapi.client.youtube.videos.list({
-        id: Id,
+        id: videoID,
         part: 'snippet,statistics,status,fileDetails,processingDetails,suggestions'
     });
     request.execute(function(response) {
@@ -199,6 +199,7 @@ function addSearchHTML(i, isLastItem) {
     newHTML = newHTML + "<div class=\"panel-heading\"><h4>" + v_Title + "</h4></div>";
     newHTML = newHTML + "<div class=\"panel-body\">";
     newHTML = newHTML + thumbnailHTML;
+    newHTML = newHTML + "<p>Video ID: " + videoID + "</p>";
     newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input class=\"form-control\" id=\"c_Title\" type=\"text\" value=\"" + v_Title + "\"></p>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
     newHTML = newHTML + categoryDropdownHTML;
@@ -275,5 +276,5 @@ function addSearchHTML(i, isLastItem) {
 function populateWithVideos() {
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
-    $('#update-button').attr('disabled', false);
+//    $('#update-button').attr('disabled', false);
 }
