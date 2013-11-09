@@ -74,6 +74,11 @@
                     <div id="login-container" class="pre-auth">
                         <h4>Please <a href="#" id="login-link">authorize</a> to continue.</h4>
                     </div>
+                    <div id="video-container"></div>
+                    <div class="button-container input-group">
+                        <button id="prev-button" class="btn btn-large btn-primary paging-button" onclick="previousPage()">Previous Page</button>
+                        <button id="next-button" class="btn btn-large btn-primary paging-button" onclick="nextPage()">Next Page</button>
+                    </div>
                     <div id="buttons" class="input-group">
                         <input id="vidId" class="form-control" placeholder="Video ID here…" type="text"/>
                         <div class="input-group-btn">
@@ -88,7 +93,7 @@
                     <script src="js/auth.js"></script>
                     <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
                 </div>
-                
+
                 <div class="col-md-5" id="VideoPic"></div>
             </div>
 
