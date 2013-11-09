@@ -60,9 +60,10 @@ function requestVideoPlaylist(playlistId, pageToken) {
             newHTML = "";
             $.each(playlistItems, function(index, item) {
                 var done = false;
-                if (index === playlistItems.length - 1) {
+                if (index === playlistItems.length) {
                     done = true;
                 }
+                console.log(item.snippet.resourceId.videoId, index, done);
                 getvideoHTML(item.snippet.resourceId.videoId, done);
             });
         } else {
