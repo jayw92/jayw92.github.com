@@ -60,7 +60,7 @@ function requestVideoPlaylist(playlistId, pageToken) {
             newHTML = "";
             $.each(playlistItems, function(index, item) {
                 var done = false;
-                if (index === playlistItems.length) {
+                if (index === playlistItems.length - 1) {
                     done = true;
                 }
                 console.log(item.snippet.resourceId.videoId, index, done);
@@ -264,7 +264,7 @@ function addSearchHTML(isLastItem) {
     if (typeof v_TagSuggestions !== "undefined")
         newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
     newHTML = newHTML + "</div></div>";
-    if (isLastItem){
+    if (isLastItem) {
         populateWithVideos();
     }
 }
