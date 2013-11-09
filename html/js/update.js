@@ -32,6 +32,7 @@ function getCategoryTitle(id) {
         cateSnip = JSON.parse(str3);
         if (typeof cateSnip['items'] !== "undefined") {
             CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
+            console.log(CategoryTitleReturn);
             categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + index + "\">" + CategoryTitleReturn + "</option>\n";
             index++;
             getCategoryTitle(index);
@@ -40,7 +41,6 @@ function getCategoryTitle(id) {
             categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
             requestUserUploadsPlaylistId();
         }
-        console.log(CategoryTitleReturn);
     });
 }
 
