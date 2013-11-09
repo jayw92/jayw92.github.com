@@ -15,7 +15,7 @@ var v_UploadStatus, v_ViewCount;
 var videoHTML, newHTML, str, str2, str3;
 var u_str, updateRequest;
 var c_CategoryId, c_Description, c_License, c_PrivacyStatus, c_TagsList, c_Title;
-var playlistId, nextPageToken, prevPageToken, playlistItems;
+var playlistId, nextPageToken, prevPageToken, playlistItems, isDone;
 
 
 var cateSnip, CategoryTitleReturn;
@@ -58,14 +58,7 @@ function requestVideoPlaylist(playlistId, pageToken) {
         playlistItems = response.result.items;
         if (playlistItems) {
             newHTML = "";
-            $.each(playlistItems, function(index, item) {
-                var done = false;
-                if (index === playlistItems.length - 1) {
-                    done = true;
-                }
-                console.log(item.snippet.resourceId.videoId, index, done);
-                getvideoHTML(item.snippet.resourceId.videoId, done);
-            });
+            getvideoHTML(0, false);
         } else {
             $('#video-container').html('You have no uploaded videos');
         }
@@ -113,7 +106,13 @@ function updateVideo() {
 }
 
 // DISPLAY FOR 
-function getvideoHTML(Id, isLastItem) {
+function getvideoHTML(index, isLastItem) {
+    var Id = playlistItems[index].snippet.resourceId.videoId;
+    index++;
+    isDone = false;
+    if (index === playlistItems.length) {
+        isDone = true;
+    }
     link = "//www.youtube.com/embed/" + Id;
     var request = gapi.client.youtube.videos.list({
         id: Id,
@@ -164,7 +163,7 @@ function getvideoHTML(Id, isLastItem) {
             str2 = JSON.stringify(res.result);
             snip = JSON.parse(str2);
             v_CategoryTitle = snip['items'][0]['snippet']['title'];
-            addSearchHTML(isLastItem);
+            addSearchHTML(index, isLastItem);
         });
     });
 }
@@ -182,7 +181,7 @@ function getCategoryTitle(id) {
     });
 }
 
-function addSearchHTML(isLastItem) {
+function addSearchHTML(i, isLastItem) {
     $('#error-update').html("");
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
@@ -266,6 +265,9 @@ function addSearchHTML(isLastItem) {
     newHTML = newHTML + "</div></div>";
     if (isLastItem) {
         populateWithVideos();
+    }
+    else {
+        getvideoHTML(i, false);
     }
 }
 
