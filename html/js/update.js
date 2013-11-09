@@ -91,6 +91,7 @@ var cateSnip, CategoryTitleReturn, categoryDropdownHTML;
 
 // SEARCH FOR CATEGORYTITLE BY INDEX
 function getCategoryTitle(id) {
+        console.log("HERE",id);
     var categoryTitleRequest = gapi.client.youtube.videoCategories.list({
         id: "" + id,
         part: 'snippet'
@@ -98,6 +99,7 @@ function getCategoryTitle(id) {
     categoryTitleRequest.execute(function(res) {
         str3 = JSON.stringify(res.result);
         cateSnip = JSON.parse(str3);
+        console.log("IN HERE",id);
         if (typeof cateSnip['items'] !== "undefined") {
             CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
             console.log(CategoryTitleReturn);
