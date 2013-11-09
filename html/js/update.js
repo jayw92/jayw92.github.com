@@ -2,6 +2,9 @@
 function handleAPILoaded() {
     requestUserUploadsPlaylistId();
     $('#search-button').attr('disabled', false);
+    var index = 0;
+    categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
+    getCategoryTitle(index);
 }
 
 // GLOBAL VARIABLES
@@ -16,10 +19,30 @@ var videoHTML, newHTML, str, str2, str3;
 var u_str, updateRequest;
 var c_CategoryId, c_Description, c_License, c_PrivacyStatus, c_TagsList, c_Title;
 var playlistId, nextPageToken, prevPageToken, playlistItems, isDone;
+var cateSnip, CategoryTitleReturn, categoryDropdownHTML;
 
 
-var cateSnip, CategoryTitleReturn;
-// UPDATE VIDEO FUNCTION
+// SEARCH FOR CATEGORYTITLE BY INDEX
+function getCategoryTitle(id) {
+    var categoryTitleRequest = gapi.client.youtube.videoCategories.list({
+        id: "" + id,
+        part: 'snippet'
+    });
+    categoryTitleRequest.execute(function(res) {
+        str3 = JSON.stringify(res.result);
+        cateSnip = JSON.parse(str3);
+        CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
+        if (CategoryTitleReturn !== "undefined") {
+            categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + index + "\">" + CategoryTitleReturn + "</option>\n";
+            index++;
+            getCategoryTitle(index);
+        }
+        else {
+            categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
+        }
+        console.log(CategoryTitleReturn);
+    });
+}
 
 //Retrieve the uploads playlist id.
 function requestUserUploadsPlaylistId() {
@@ -105,7 +128,7 @@ function updateVideo() {
     });
 }
 
-// DISPLAY FOR 
+// DISPLAY FOR VIDEO ITEM IN UPLOADS PLAYLIST
 function getvideoHTML(index) {
     var Id = playlistItems[index].snippet.resourceId.videoId;
     index++;
@@ -168,19 +191,6 @@ function getvideoHTML(index) {
     });
 }
 
-function getCategoryTitle(id) {
-    var categoryTitleRequest = gapi.client.youtube.videoCategories.list({
-        id: "" + id,
-        part: 'snippet'
-    });
-    categoryTitleRequest.execute(function(res) {
-        str3 = JSON.stringify(res.result);
-        cateSnip = JSON.parse(str3);
-        CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
-        console.log(CategoryTitleReturn);
-    });
-}
-
 function addSearchHTML(i, isLastItem) {
     $('#error-update').html("");
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
@@ -191,16 +201,7 @@ function addSearchHTML(i, isLastItem) {
     newHTML = newHTML + thumbnailHTML;
     newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input class=\"form-control\" id=\"c_Title\" type=\"text\" value=\"" + v_Title + "\"></p>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
-//    var index = 0;
-//    var categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
-//    getCategoryTitle(index);
-//    while (typeof CategoryTitleReturn !== "undefined") {
-//        categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + index + "\">" + CategoryTitleReturn + "</option>\n";
-//        index++;
-//        getCategoryTitle(index);
-//    }
-//    categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
-//    newHTML = newHTML + categoryDropdownHTML;
+    newHTML = newHTML + categoryDropdownHTML;
     newHTML = newHTML + "<p>Description: " + v_Description + "</p>";
     newHTML = newHTML + "<p class=\"updatefield\">Update Description (Separte using commas[,]: <textarea class=\"form-control\" id=\"c_Description\" row=\"5\" cols=\"60\">" + v_Description + "</textarea></p>";
     if (typeof v_TagsList !== "undefined") {
