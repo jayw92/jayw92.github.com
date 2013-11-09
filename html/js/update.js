@@ -192,16 +192,16 @@ function addSearchHTML(isLastItem) {
     newHTML = newHTML + thumbnailHTML;
     newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input class=\"form-control\" id=\"c_Title\" type=\"text\" value=\"" + v_Title + "\"></p>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
-    var index = 0;
-    var categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
-    getCategoryTitle(index);
-    while (typeof CategoryTitleReturn !== "undefined") {
-        categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + index + "\">" + CategoryTitleReturn + "</option>\n";
-        index++;
-        getCategoryTitle(index);
-    }
-    categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
-    newHTML = newHTML + categoryDropdownHTML;
+//    var index = 0;
+//    var categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
+//    getCategoryTitle(index);
+//    while (typeof CategoryTitleReturn !== "undefined") {
+//        categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + index + "\">" + CategoryTitleReturn + "</option>\n";
+//        index++;
+//        getCategoryTitle(index);
+//    }
+//    categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
+//    newHTML = newHTML + categoryDropdownHTML;
     newHTML = newHTML + "<p>Description: " + v_Description + "</p>";
     newHTML = newHTML + "<p class=\"updatefield\">Update Description (Separte using commas[,]: <textarea class=\"form-control\" id=\"c_Description\" row=\"5\" cols=\"60\">" + v_Description + "</textarea></p>";
     if (typeof v_TagsList !== "undefined") {
