@@ -57,30 +57,35 @@ function requestVideoPlaylist(playlistId, pageToken) {
 
         playlistItems = response.result.items;
         if (playlistItems) {
+            newHTML = "";
             $.each(playlistItems, function(index, item) {
-                displayResult(item.snippet);
+                var done = false;
+                if (index === playlistItems.length - 1) {
+                    done = true;
+                }
+                getvideoHTML(item.snippet.resourceId.videoId, done);
             });
         } else {
-            $('#video-container').html('Sorry you have no uploaded videos');
+            $('#video-container').html('You have no uploaded videos');
         }
     });
 }
 
 // Create a thumbnail for a video snippet.
 function displayResult(videoSnippet) {
-  var title = videoSnippet.title;
-  var videoId = videoSnippet.resourceId.videoId;
-  $('#video-container').append('<p>' + title + ' - ' + videoId + '</p>');
+    var title = videoSnippet.title;
+    var videoId = videoSnippet.resourceId.videoId;
+    $('#video-container').append('<p>' + title + ' - ' + videoId + '</p>');
 }
 
 // Retrieve the next page of videos.
 function nextPage() {
-  requestVideoPlaylist(playlistId, nextPageToken);
+    requestVideoPlaylist(playlistId, nextPageToken);
 }
 
 // Retrieve the previous page of videos.
 function previousPage() {
-  requestVideoPlaylist(playlistId, prevPageToken);
+    requestVideoPlaylist(playlistId, prevPageToken);
 }
 
 
@@ -106,12 +111,11 @@ function updateVideo() {
     });
 }
 
-// SEARCH FUNCTION
-function search() {
-    videoID = $('#vidId').val();
-    link = "//www.youtube.com/embed/" + videoID;
+// DISPLAY FOR 
+function getvideoHTML(Id, isLastItem) {
+    link = "//www.youtube.com/embed/" + Id;
     var request = gapi.client.youtube.videos.list({
-        id: videoID,
+        id: Id,
         part: 'snippet,statistics,status,fileDetails,processingDetails,suggestions'
     });
     request.execute(function(response) {
@@ -159,7 +163,7 @@ function search() {
             str2 = JSON.stringify(res.result);
             snip = JSON.parse(str2);
             v_CategoryTitle = snip['items'][0]['snippet']['title'];
-            addSearchHTML();
+            addSearchHTML(isLastItem);
         });
     });
 }
@@ -177,11 +181,11 @@ function getCategoryTitle(id) {
     });
 }
 
-function addSearchHTML() {
+function addSearchHTML(isLastItem) {
     $('#error-update').html("");
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
-    newHTML = "<hr><div class=\"panel panel-primary\">";
+    newHTML = newHTML + "<hr><div class=\"panel panel-primary\">";
     newHTML = newHTML + "<div class=\"panel-heading\"><h4>" + v_Title + "</h4></div>";
     newHTML = newHTML + "<div class=\"panel-body\">";
     newHTML = newHTML + thumbnailHTML;
@@ -259,6 +263,12 @@ function addSearchHTML() {
     if (typeof v_TagSuggestions !== "undefined")
         newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
     newHTML = newHTML + "</div></div>";
+    if (isLastItem){
+        populateWithVideos();
+    }
+}
+
+function populateWithVideos() {
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
     $('#update-button').attr('disabled', false);

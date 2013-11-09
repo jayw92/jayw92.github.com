@@ -19,6 +19,16 @@ body {
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 
+//My uploads css
+
+.paging-button {
+  visibility: hidden;
+}
+
+.button-container {
+  clear: both;
+}
+
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {
   position: relative;
