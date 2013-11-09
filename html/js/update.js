@@ -30,8 +30,8 @@ function getCategoryTitle(id) {
     categoryTitleRequest.execute(function(res) {
         str3 = JSON.stringify(res.result);
         cateSnip = JSON.parse(str3);
-        if (cateSnip['items'] !== "undefined") {
-        CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
+        if (typeof cateSnip['items'] !== "undefined") {
+            CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
             categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + index + "\">" + CategoryTitleReturn + "</option>\n";
             index++;
             getCategoryTitle(index);
