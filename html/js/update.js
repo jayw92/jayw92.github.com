@@ -58,7 +58,7 @@ function requestVideoPlaylist(playlistId, pageToken) {
         playlistItems = response.result.items;
         if (playlistItems) {
             newHTML = "";
-            getvideoHTML(0, false);
+            getvideoHTML(0);
         } else {
             $('#video-container').html('You have no uploaded videos');
         }
@@ -106,7 +106,7 @@ function updateVideo() {
 }
 
 // DISPLAY FOR 
-function getvideoHTML(index, isLastItem) {
+function getvideoHTML(index) {
     var Id = playlistItems[index].snippet.resourceId.videoId;
     index++;
     isDone = false;
@@ -163,7 +163,7 @@ function getvideoHTML(index, isLastItem) {
             str2 = JSON.stringify(res.result);
             snip = JSON.parse(str2);
             v_CategoryTitle = snip['items'][0]['snippet']['title'];
-            addSearchHTML(index, isLastItem);
+            addSearchHTML(index, isDone);
         });
     });
 }
