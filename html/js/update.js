@@ -312,6 +312,7 @@ function updateVideo() {
             if (videoSelectedPlaylistId !== "0") {
                 addToPlaylist(videoID);
             }
+            getVideoData(videoID, true);
             $('#update-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Updated video details.</div>");
         } else {
             $('#update-status').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Could not update video details.</div>");
