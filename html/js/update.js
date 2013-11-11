@@ -53,7 +53,6 @@ function getCategoryList() {
         while (typeof cateSnip['items'][index] !== "undefined") {
             CategoryTitleReturn = cateSnip['items'][index]['snippet']['title'];
             var CategoryNumber = cateSnip['items'][index]['id'];
-            console.log(CategoryNumber, CategoryTitleReturn);
             categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + CategoryNumber + "\">" + CategoryTitleReturn + "</option>\n";
             index++;
         }
@@ -270,7 +269,8 @@ function loadDefaultForm() {
     $('#c_PrivacyStatus').val(status['privacyStatus']);
     $('#c_License').val(status['license']);
     $('#c_Description').val(snippet['description']);
-    $('#c_TagsList').val(snippet['tags'].toString());
+    if (typeof snippet['tags'] !== "undefined")
+        $('#c_TagsList').val(snippet['tags'].toString());
 }
 
 // Apply video default settings to selected video
@@ -418,14 +418,16 @@ function addSearchHTML() {
     }
 
     newHTML = newHTML + "<h4>[VIDEO SUGGESTIONS]</h4>";
-    if (typeof suggestions['processingErrors'] !== "undefined")
-        newHTML = newHTML + "<p>Processing Erros (Causes a failed upload): " + suggestions['processingErrors'].toString() + "</p>";
-    if (typeof suggestions['processingWarnings'] !== "undefined")
-        newHTML = newHTML + "<p>Processing Warnings (Causes difficulties in processing): " + suggestions['processingWarnings'].toString() + "</p>";
-    if (typeof suggestions['processingHints'] !== "undefined")
-        newHTML = newHTML + "<p>Processing Hints (Hints for improving processing of video): " + suggestions['processingHints'].toString() + "</p>";
-    if (typeof suggestions['tagSuggestions'] !== "undefined")
-        newHTML = newHTML + "<p>Tag Suggestions: " + suggestions['tagSuggestions'].toString() + "</p>";
+    if (typeof suggestions !== "undefined") {
+        if (typeof suggestions['processingErrors'] !== "undefined")
+            newHTML = newHTML + "<p>Processing Erros (Causes a failed upload): " + suggestions['processingErrors'].toString() + "</p>";
+        if (typeof suggestions['processingWarnings'] !== "undefined")
+            newHTML = newHTML + "<p>Processing Warnings (Causes difficulties in processing): " + suggestions['processingWarnings'].toString() + "</p>";
+        if (typeof suggestions['processingHints'] !== "undefined")
+            newHTML = newHTML + "<p>Processing Hints (Hints for improving processing of video): " + suggestions['processingHints'].toString() + "</p>";
+        if (typeof suggestions['tagSuggestions'] !== "undefined")
+            newHTML = newHTML + "<p>Tag Suggestions: " + suggestions['tagSuggestions'].toString() + "</p>";
+    }
     newHTML = newHTML + "</div></div>";
     populateWithHTML();
 }
