@@ -52,7 +52,6 @@ function getCategoryList() {
     categoryTitleRequest.execute(function(res) {
         str3 = JSON.stringify(res.result);
         cateSnip = JSON.parse(str3);
-        console.log("IN HERE");
         var index = 0;
         while (typeof cateSnip['items'][index] !== "undefined") {
             CategoryTitleReturn = cateSnip['items'][index]['snippet']['title'];
@@ -74,6 +73,7 @@ function requestUserChannelData() {
         part: 'contentDetails'
     });
     request.execute(function(response) {
+        console.log("IN HERE");
         uploadsPlaylistId = response.result.items[0].contentDetails.relatedPlaylists.uploads;
         getUserPlaylists(true);
     });
@@ -125,8 +125,8 @@ function getUserPlaylists(isFirstLoad, pageToken) {
             playlistsDropdownHTML = "";
             var index = 0;
             while (typeof playlists[index] !== "undefined") {
-                var pTitle = playlistItems[index].snippet.title;
-                var playlistid = playlistItems[index].id;
+                var pTitle = playlists[index].snippet.title;
+                var playlistid = playlists[index].id;
                 console.log(playlistid, pTitle);
                 playlistsDropdownHTML = playlistsDropdownHTML + "<option value=\"" + playlistid + "\">" + pTitle + "</option>\n";
                 index++;
