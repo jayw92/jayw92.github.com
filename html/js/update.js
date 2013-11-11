@@ -428,7 +428,7 @@ function addSearchHTML() {
         if (typeof suggestions['tagSuggestions'] !== "undefined")
             newHTML = newHTML + "<p>Tag Suggestions: " + suggestions['tagSuggestions'].toString() + "</p>";
     }
-    newHTML = newHTML + "</div></div></div>";
+    newHTML = newHTML + "</div></div>";
     populateWithHTML();
 }
 
