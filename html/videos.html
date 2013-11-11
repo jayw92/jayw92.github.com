@@ -67,53 +67,151 @@
 
 
         <div class="container">
-            playlistbuttons
+
+            <div class="row text-center">
+                <h1>Video Defaults & <span class="text-muted"> Playlists</span></h1>
+
+                <div id="login-container" class="pre-auth">
+                    <h4>Please <a href="#" id="login-link">authorize account access</a> to continue...</h4>
+                </div>
+                <hr>
+            </div>
+
             <div class="row">
-                <div class="col-md-7">
-                    <h1>Videos <span class="text-muted">& Playlists</span></h1>
-                    <div id="login-container" class="pre-auth">
-                        <h4>Please <a href="#" id="login-link">authorize</a> to continue.</h4>
+
+                <div class="col-md-3 container" id="playlist-container">
+                    <h3>User <span class="text-muted"> Playlists</span></h3>
+                    
+                    <div id="Playlists-status" class="container"></div>
+                    
+                    <div class="container">
+                        <select multiple disabled id="playlistsSelectionBox" onchange="selectedPlaylist(this)" class="form-control"></select>
+                    </div><br>
+                    
+                    <div class="button-container text-center">
+                        <button id="prevlist-button" class="btn btn-large btn-primary paging-button" disabled onclick="previousPlaylists()">Previous</button>
+                        <button id="nextlist-button" class="btn btn-large btn-primary paging-button" disabled onclick="nextPlaylists()">Next</button>
+                    </div><hr>
+                    
+                    <div id="playlistSection" class="container">
+                        
+                    </div>
+                    
+                </div>
+
+                <div class="col-md-5">
+                    <h3>All <span class="text-muted"> Uploaded Videos</span></h3>
+
+                    <div id="uploadItems-status" class="container"></div>
+
+                    <div class="container">
+                        <select multiple disabled id="uploadsSelectionBox" onchange="selectedVideo(this)" class="form-control"></select>
+                    </div>
+                    <br>
+
+                    <div class="button-container text-center">
+                        <button id="prev-button" class="btn btn-large btn-primary paging-button" disabled onclick="previousVids()">Previous</button>
+                        <button id="next-button" class="btn btn-large btn-primary paging-button" disabled onclick="nextVids()">Next</button>
                     </div>
 
-                    <div id="playlistbuttons">
-                        <button id="playlist-button" class="btn btn-large btn-primary" disabled onclick="createPlaylist()">Create a new Private Playlist</button>
-                        <br>
-                        <label>Current Playlist Id: <input id="playlist-id" class="form-control" placeholder="" value='' type="text"/></label>
-                        <br>
-                        <div class="input-group">
-                            <input id="video-id" class="form-control" placeholder="Video ID here…" type="text"/>
-                            <div class="input-group-btn">
-                                <button class="btn btn-large btn-primary" onclick="addVideoToPlaylist()">Add to current playlist</button>
+                    <hr>
+                    <div class="container" id="VideoPic"></div>
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><h4>Video Default</h4></div>
+                        <div class="panel-body">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-addon">Title</span> <input class="form-control" id="c_Title" type="text">
+                            </div><br>
+
+                            <div class="checkbox">
+                                <label>
+                                    <input id="c_Embeddable" type="checkbox"> Embeddable?
+                                </label>
                             </div>
+                            <div id="c_PublicStatsViewable" class="checkbox">
+                                <label>
+                                    <input type="checkbox"> Public Stats Viewable?
+                                </label>
+                            </div>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">Video Category</span> 
+                                <select id="c_CategoryId" class="form-control"></select>
+                            </div><br>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">Add to Playlist</span> 
+                                <select id="c_PlaylistId" class="form-control" onchange="VideoAddPlaylist(this)"></select>
+                            </div><br>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">Privacy Status</span> 
+                                <select id="c_PrivacyStatus" class="form-control">
+                                    <option value="private">Private</option>
+                                    <option value="public">Public</option>
+                                    <option value="unlisted">Unlisted</option>
+                                </select>
+                            </div><br>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">Video License</span>
+                                <select id="c_License" class="form-control">
+                                    <option value="creativeCommon">Creative Common License</option>
+                                    <option value="youtube">Youtube License</option>
+                                </select>
+                            </div><br>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Description</div>
+                                <div class="panel-body">
+                                    <textarea class="form-control" id="c_Description" rows="4" cols="60"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Add Tags (ex: tag1,tag2,tag3,tags)</div>
+                                <div class="panel-body">
+                                    <textarea class="form-control" id="c_TagsList" rows="2" cols="40"></textarea>
+                                </div>
+                            </div>
+
                         </div>
-
-                    </div>
-                    <h3>Playlist: <span id="playlist-title"></span></h3>
-                    <p id="playlist-description"></p>
-                    <div id="playlist-container">
-                        <span id="status">No Videos</span>
                     </div>
 
-                    <div id="video-container"></div>
-                    <div class="button-container">
-                        <button id="prev-button" class="btn btn-large btn-primary paging-button" onclick="previousPage()">Previous Page</button>
-                        <button id="next-button" class="btn btn-large btn-primary paging-button" onclick="nextPage()">Next Page</button>
-                    </div>
-                    <!--                    <div id="buttons" class="input-group">
-                                            <input id="vidId" class="form-control" placeholder="Video ID here…" type="text"/>
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-large btn-primary" id="search-button" disabled onclick="search()">Show Information</button>
-                                                <button class="btn btn-large btn-primary" id="update-button" disabled onclick="updateVideo()">Change Video Settings</button>
+                    <div id="update-status" class="container"></div>
+                    <p class="text-center">
+                        <button class="btn btn-large btn-primary navbar-center" id="update-button" disabled onclick="updateVideo()">Add Default Settings to Video</button>
+                    </p>
+
+                    <!--                    <div id="playlistbuttons">
+                                            <button id="playlist-button" class="btn btn-large btn-primary" disabled onclick="createPlaylist()">Create a new Private Playlist</button>
+                                            <br>
+                                            <label>Current Playlist Id: <input id="playlist-id" class="form-control" placeholder="" value='' type="text"/></label>
+                                            <br>
+                                            <div class="input-group">
+                                                <input id="video-id" class="form-control" placeholder="Video ID here…" type="text"/>
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-large btn-primary" onclick="addVideoToPlaylist()">Add to current playlist</button>
+                                                </div>
                                             </div>
+                    
+                                        </div>
+                                        <h3>Playlist: <span id="playlist-title"></span></h3>
+                                        <p id="playlist-description"></p>
+                                        <div id="playlist-container">
+                                            <span id="status">No Videos</span>
                                         </div>-->
-                    <div id="error-update" class="container"></div>
-                    <div id="search-container" class="container"></div>
+
                     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
                     <script src="js/auth.js"></script>
                     <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
                 </div>
 
-                <div class="col-md-5" id="VideoPic"></div>
+                <div class="col-md-4 container" id="search-container">
+
+                </div>
+
             </div>
 
 

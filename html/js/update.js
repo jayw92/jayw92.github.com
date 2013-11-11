@@ -1,21 +1,201 @@
+
+// GLOBAL VARIABLES
+var videoID, link, data, snippet, snip, statistics, status, fileDetails, processingDetails, suggestions;
+var v_BitrateBps, v_CategoryId, v_CategoryTitle, v_CommentCount, v_CreationTime, v_Description;
+var v_DislikeCount, v_DurationMs, v_FailureReason, v_FavoriteCount, v_FileName, v_FileSize, v_FileType;
+var v_License, v_LikeCount, v_PartsProcessed, v_PartsProcessedPercent, v_PartsTotal, v_PrivacyStatus;
+var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarnings, v_processingFailureReason;
+var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
+var v_UploadStatus, v_ViewCount;
+
+var videoHTML, newHTML, str, str2, str3;
+var u_str, updateRequest;
+
+var c_CategoryId, c_Description, c_License, c_PrivacyStatus, c_TagsList, c_Title, c_Embeddable, c_PublicStatsViewable;
+
+var nextPageToken, prevPageToken, playlistItems, uploadsPlaylistId, uploadsDropdownHTML, channelId;
+
+var prevPlaylistToken, nextPlaylistToken, playlists, playlistsDropdownHTML, SelectedPlaylistId, SelectedPlaylist;
+var p_Title, p_Description, p_PrivacyStatus, videoSelectedPlaylistId, videoSelectedPlaylist;
+
+var cateSnip, CategoryTitleReturn, categoryDropdownHTML;
+
+
+////////////////////////////////////////////////////////////////////////////
+//                         FIRST PAGE LOAD FUNCTIONS
+////////////////////////////////////////////////////////////////////////////
+
 // Once the api loads call enable the search box.
 function handleAPILoaded() {
-//    $('#search-button').attr('disabled', false);
     enableForm();
-    var index = 0;
-    categoryDropdownHTML = "<p class=\"updatefield\">Select Category: <select id=\"c_CategoryId\">\n";
-    getCategoryTitle(index);
+    $('#uploadsSelectionBox').attr('disabled', true);
+    $('#playlistsSelectionBox').attr('disabled', true);
+    categoryDropdownHTML = playlistsDropdownHTML = uploadsDropdownHTML = videoHTML = "";
+    videoSelectedPlaylistId = "0";
+    getCategoryList();
 }
 
-// Some variables to remember state.
-var playlistId, channelId;
-
-// Enable a form to create a playlist.
+// Default form looks for page objects
 function enableForm() {
+    $('#uploadItems-status').html("");
+    $('#uploadItems-status').html("");
+    $('#update-button').attr('disabled', true);
     $('#playlist-button').attr('disabled', false);
 }
 
-// Create a private playlist.
+// Get Category Titles from Youtube
+function getCategoryList() {
+    var categoryTitleRequest = gapi.client.youtube.videoCategories.list({
+        regionCode: 'US',
+        part: 'snippet'
+    });
+    categoryTitleRequest.execute(function(res) {
+        str3 = JSON.stringify(res.result);
+        cateSnip = JSON.parse(str3);
+        console.log("IN HERE");
+        var index = 0;
+        while (typeof cateSnip['items'][index] !== "undefined") {
+            CategoryTitleReturn = cateSnip['items'][index]['snippet']['title'];
+            var CategoryNumber = cateSnip['items'][index]['id'];
+            console.log(CategoryNumber, CategoryTitleReturn);
+            categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + CategoryNumber + "\">" + CategoryTitleReturn + "</option>\n";
+            index++;
+        }
+        $('#c_CategoryId').html(categoryDropdownHTML);
+        requestUserChannelData();
+    });
+}
+
+// Get user channel details
+function requestUserChannelData() {
+    // https://developers.google.com/youtube/v3/docs/channels/list
+    var request = gapi.client.youtube.channels.list({
+        mine: true,
+        part: 'contentDetails'
+    });
+    request.execute(function(response) {
+        uploadsPlaylistId = response.result.items[0].contentDetails.relatedPlaylists.uploads;
+        getUserPlaylists(true);
+    });
+}
+
+////////////////////////////////////////////////////////////////////////////
+//                         -END OF LOAD SECTION -
+////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////////////
+//                             PLAYLISTS SELECTION
+//                         PLAYLISTS RELATED FUNCTIONS
+////////////////////////////////////////////////////////////////////////////
+
+// Get All playlists
+function getUserPlaylists(isFirstLoad, pageToken) {
+    var requestOptions = {
+        mine: true,
+        part: 'id,snippet',
+        maxResults: 10
+    };
+    if (pageToken) {
+        requestOptions.pageToken = pageToken;
+    }
+    var request = gapi.client.youtube.playlists.list(requestOptions);
+    request.execute(function(response) {
+        // Only show the page buttons if there's a next or previous page.
+        nextPlaylistToken = response.result.nextPageToken;
+        if (nextPlaylistToken) {
+            $('#nextlist-button').attr('disabled', false);
+        }
+        else {
+            $('#nextlist-button').attr('disabled', true);
+        }
+
+        prevPlaylistToken = response.result.prevPageToken;
+        if (prevPlaylistToken) {
+            $('#prevlist-button').attr('disabled', false);
+        }
+        else {
+            $('#prevlist-button').attr('disabled', true);
+        }
+
+        playlists = response.result.items;
+        if (playlists) {
+            $('#Playlists-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Found playlists under this account.</div>");
+            playlistsDropdownHTML = "";
+            var index = 0;
+            while (typeof playlists[index] !== "undefined") {
+                var pTitle = playlistItems[index].snippet.title;
+                var playlistid = playlistItems[index].id;
+                console.log(playlistid, pTitle);
+                playlistsDropdownHTML = playlistsDropdownHTML + "<option value=\"" + playlistid + "\">" + pTitle + "</option>\n";
+                index++;
+            }
+            $('#playlistsSelectionBox').html(playlistsDropdownHTML);
+            $('#playlistsSelectionBox').attr('disabled', false);
+            playlistsDropdownHTML = playlistsDropdownHTML + "<option selected=\"selected\" value=\"" + 0 + "\">Select a Playlist</option>\n"
+            $('#c_PlaylistId').html(playlistsDropdownHTML);
+
+            if (isFirstLoad)
+                requestVideoPlaylist();
+
+        } else {
+            $('#Playlists-status').html("<div class=\"alert alert-danger\"><strong>Sorry!</strong> Could not find any playlists under this account.</div>");
+        }
+    });
+}
+
+// Get playlist using playlist ID
+function requestVideoPlaylist(pageToken) {
+    var requestOptions = {
+        playlistId: uploadsPlaylistId,
+        part: 'snippet',
+        maxResults: 10
+    };
+    if (pageToken) {
+        requestOptions.pageToken = pageToken;
+    }
+    var request = gapi.client.youtube.playlistItems.list(requestOptions);
+    request.execute(function(response) {
+        // Only show the page buttons if there's a next or previous page.
+        nextPageToken = response.result.nextPageToken;
+        if (nextPageToken) {
+            $('#next-button').attr('disabled', false);
+        }
+        else {
+            $('#next-button').attr('disabled', true);
+        }
+
+        prevPageToken = response.result.prevPageToken;
+        if (prevPageToken) {
+            $('#prev-button').attr('disabled', false);
+        }
+        else {
+            $('#prev-button').attr('disabled', true);
+        }
+
+        playlistItems = response.result.items;
+        if (playlistItems) {
+            $('#uploadItems-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Found your uploaded videos.</div>");
+            newHTML = "";
+            uploadsDropdownHTML = "";
+            var index = 0;
+            while (typeof playlistItems[index] !== "undefined") {
+                var uPlaylistTitle = playlistItems[index].snippet.title;
+                var videoid = playlistItems[index].snippet.resourceId.videoId;
+                console.log(videoid, uPlaylistTitle);
+                uploadsDropdownHTML = uploadsDropdownHTML + "<option value=\"" + videoid + "\">" + uPlaylistTitle + "</option>\n";
+                index++;
+            }
+            $('#uploadsSelectionBox').html(uploadsDropdownHTML);
+            $('#uploadsSelectionBox').attr('disabled', false);
+        } else {
+            $('#uploadItems-status').html("<div class=\"alert alert-danger\"><strong>Sorry!</strong> You have not uploaded any videos.</div>");
+        }
+    });
+}
+
+// Create a playlist
 function createPlaylist() {
     var request = gapi.client.youtube.playlists.insert({
         part: 'snippet,status',
@@ -32,8 +212,8 @@ function createPlaylist() {
     request.execute(function(response) {
         var result = response.result;
         if (result) {
-            playlistId = result.id;
-            $('#playlist-id').val(playlistId);
+            uploadsPlaylistId = result.id;
+            $('#playlist-id').val(uploadsPlaylistId);
             $('#playlist-title').html(result.snippet.title);
             $('#playlist-description').html(result.snippet.description);
         } else {
@@ -42,15 +222,10 @@ function createPlaylist() {
     });
 }
 
-// Add a video id from a form to a playlist.
-function addVideoToPlaylist() {
-    addToPlaylist($('#video-id').val());
-}
-
-// Add a video to a playlist.
-function addToPlaylist(id, startPos, endPos) {
+// Add a video to selected playlistID in video defaults
+function addToPlaylist(vid, startPos, endPos) {
     var details = {
-        videoId: id,
+        videoId: vid,
         kind: 'youtube#video'
     }
     if (startPos != undefined) {
@@ -63,157 +238,90 @@ function addToPlaylist(id, startPos, endPos) {
         part: 'snippet',
         resource: {
             snippet: {
-                playlistId: playlistId,
+                playlistId: videoSelectedPlaylistId,
                 resourceId: details
             }
         }
     });
     request.execute(function(response) {
-        $('#status').html('<pre>' + JSON.stringify(response.result) + '</pre>');
-    });
-}
-
-
-// GLOBAL VARIABLES
-var videoID, link, data, snippet, snip, statistics, status, fileDetails, processingDetails, suggestions;
-var v_BitrateBps, v_CategoryId, v_CategoryTitle, v_CommentCount, v_CreationTime, v_Description;
-var v_DislikeCount, v_DurationMs, v_FailureReason, v_FavoriteCount, v_FileName, v_FileSize, v_FileType;
-var v_License, v_LikeCount, v_PartsProcessed, v_PartsProcessedPercent, v_PartsTotal, v_PrivacyStatus;
-var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarnings, v_processingFailureReason;
-var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
-var v_UploadStatus, v_ViewCount;
-var videoHTML, newHTML, str, str2, str3;
-var u_str, updateRequest;
-var c_CategoryId, c_Description, c_License, c_PrivacyStatus, c_TagsList, c_Title;
-var playlistId, nextPageToken, prevPageToken, playlistItems, isDone;
-var cateSnip, CategoryTitleReturn, categoryDropdownHTML;
-
-
-// SEARCH FOR CATEGORYTITLE BY INDEX
-function getCategoryTitle(id) {
-        console.log("HERE",id);
-    var categoryTitleRequest = gapi.client.youtube.videoCategories.list({
-        id: "" + id,
-        part: 'snippet'
-    });
-    categoryTitleRequest.execute(function(res) {
-        str3 = JSON.stringify(res.result);
-        cateSnip = JSON.parse(str3);
-        console.log("IN HERE",id);
-        if (typeof cateSnip['items'] !== "undefined") {
-            CategoryTitleReturn = cateSnip['items'][0]['snippet']['title'];
-            console.log(CategoryTitleReturn);
-            categoryDropdownHTML = categoryDropdownHTML + "<option value=\"" + index + "\">" + CategoryTitleReturn + "</option>\n";
-            index++;
-            getCategoryTitle(index);
+        var result = response.result;
+        if (result) {
+            $('#uploadItems-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Added [" + v_Title + "] to playlist [" + videoSelectedPlaylist + "].</div>");
         }
         else {
-            categoryDropdownHTML = categoryDropdownHTML + "</select></p>";
-            requestUserUploadsPlaylistId();
+            $('#uploadItems-status').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Could not add video to playlist.</div>");
         }
     });
 }
 
-//Retrieve the uploads playlist id.
-function requestUserUploadsPlaylistId() {
-    // https://developers.google.com/youtube/v3/docs/channels/list
-    var request = gapi.client.youtube.channels.list({
-        mine: true,
-        part: 'contentDetails'
-    });
-    request.execute(function(response) {
-        playlistId = response.result.items[0].contentDetails.relatedPlaylists.uploads;
-        requestVideoPlaylist(playlistId);
-    });
-}
-
-// Retrieve a playist of videos.
-function requestVideoPlaylist(playlistId, pageToken) {
-    $('#video-container').html('');
-    var requestOptions = {
-        playlistId: playlistId,
-        part: 'snippet',
-        maxResults: 10
-    };
-    if (pageToken) {
-        requestOptions.pageToken = pageToken;
-    }
-    var request = gapi.client.youtube.playlistItems.list(requestOptions);
-    request.execute(function(response) {
-        // Only show the page buttons if there's a next or previous page.
-        nextPageToken = response.result.nextPageToken;
-        var nextVis = nextPageToken ? 'visible' : 'hidden';
-        $('#next-button').css('visibility', nextVis);
-        prevPageToken = response.result.prevPageToken
-        var prevVis = prevPageToken ? 'visible' : 'hidden';
-        $('#prev-button').css('visibility', prevVis);
-
-        playlistItems = response.result.items;
-        if (playlistItems) {
-            newHTML = "";
-            getvideoHTML(0);
-        } else {
-            $('#video-container').html('You have no uploaded videos');
-        }
-    });
-}
-
-// Create a thumbnail for a video snippet.
-function displayResult(videoSnippet) {
-    var title = videoSnippet.title;
-    var videoId = videoSnippet.resourceId.videoId;
-    $('#video-container').append('<p>' + title + ' - ' + videoId + '</p>');
-}
-
-// Retrieve the next page of videos.
-function nextPage() {
-    requestVideoPlaylist(playlistId, nextPageToken);
-}
-
-// Retrieve the previous page of videos.
-function previousPage() {
-    requestVideoPlaylist(playlistId, prevPageToken);
-}
+////////////////////////////////////////////////////////////////////////////
+//                         -END OF PLAYLISTS SECTION -
+////////////////////////////////////////////////////////////////////////////
 
 
+
+////////////////////////////////////////////////////////////////////////////
+//                                VIDEO SECTION
+//                           VIDEO RELATED FUNCTIONS
+////////////////////////////////////////////////////////////////////////////
+
+// Apply video default settings to selected video
 function updateVideo() {
     c_Title = $('#c_Title').val();
     c_Description = $('#c_Description').val();
     c_TagsList = $('#c_TagsList').val().split(",");
+
+    var ex = document.getElementById("c_CategoryId");
+    c_CategoryId = ex.options[ex.selectedIndex].value;
+    ex = document.getElementById("c_License");
+    c_License = ex.options[ex.selectedIndex].value;
+    ex = document.getElementById("c_PrivacyStatus");
+    c_PrivacyStatus = ex.options[ex.selectedIndex].value;
+    ex = document.getElementById("c_Embeddable");
+    c_Embeddable = ex.checked;
+    ex = document.getElementById("c_PublicStatsViewable");
+    c_PublicStatsViewable = ex.checked;
+
     snippet['title'] = c_Title;
     snippet['description'] = c_Description;
     snippet['tags'] = c_TagsList;
-    updateRequest = gapi.client.youtube.videos.update({
-        part: 'snippet',
-        resource: {id: videoID, snippet: snippet}
-    });
-    updateRequest.execute(function(u_response) {
-        var u_result = u_response.result;
-        u_str = JSON.stringify(u_response.result);
-        if (u_result) {
-            $('#error-update').html("<div class=\"alert alert-success\"><strong>Success!</strong> Updated video details.</div>");
+    snippet['categoryId'] = c_CategoryId;
+    status['license'] = c_License;
+    status['privacyStatus'] = c_PrivacyStatus;
+    status['embeddable'] = c_Embeddable;
+    status['publicStatsViewable'] = c_PublicStatsViewable;
+
+    var requestOptions = {
+        part: 'snippet,status',
+        resource: {id: videoID, snippet: snippet, status: status}
+    };
+
+    updateRequest = gapi.client.youtube.videos.update(requestOptions);
+
+    updateRequest.execute(function(response) {
+        var res = response.result;
+        if (res) {
+            if (videoSelectedPlaylistId !== "0") {
+                addToPlaylist(videoID);
+            }
+            $('#update-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Updated video details.</div>");
         } else {
-            $('#error-update').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Could not update video details.</div>");
+            $('#update-status').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Could not update video details.</div>");
         }
     });
 }
 
-// DISPLAY FOR VIDEO ITEM IN UPLOADS PLAYLIST
-function getvideoHTML(index) {
-    videoID = playlistItems[index].snippet.resourceId.videoId;
-    index++;
-    isDone = false;
-    if (index === playlistItems.length) {
-        isDone = true;
-    }
+// Get video resource from user selection and set necessary values
+function getVideoData(vID, withHTML) {
+    enableForm();
+    videoID = vID;
     link = "//www.youtube.com/embed/" + videoID;
     var request = gapi.client.youtube.videos.list({
         id: videoID,
         part: 'snippet,statistics,status,fileDetails,processingDetails,suggestions'
     });
     request.execute(function(response) {
-        str = JSON.stringify(response.result);
-        data = JSON.parse(str);
+        data = response;
         snippet = data['items'][0]['snippet'];
         statistics = data['items'][0]['statistics'];
         status = data['items'][0]['status'];
@@ -253,34 +361,32 @@ function getvideoHTML(index) {
             part: 'snippet'
         });
         categoryRequest.execute(function(res) {
-            str2 = JSON.stringify(res.result);
-            snip = JSON.parse(str2);
+            snip = res.result;
             v_CategoryTitle = snip['items'][0]['snippet']['title'];
-            addSearchHTML(index, isDone);
+            if (withHTML)
+                addSearchHTML();
         });
     });
 }
 
-function addSearchHTML(i, isLastItem) {
-    $('#error-update').html("");
+// Generate html after a video was targeted by user
+function addSearchHTML() {
     videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
+
     newHTML = newHTML + "<hr><div class=\"panel panel-primary\">";
     newHTML = newHTML + "<div class=\"panel-heading\"><h4>" + v_Title + "</h4></div>";
     newHTML = newHTML + "<div class=\"panel-body\">";
     newHTML = newHTML + thumbnailHTML;
     newHTML = newHTML + "<p>Video ID: " + videoID + "</p>";
-    newHTML = newHTML + "<p class=\"updatefield\">Update Title: <input class=\"form-control\" id=\"c_Title\" type=\"text\" value=\"" + v_Title + "\"></p>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
     newHTML = newHTML + categoryDropdownHTML;
     newHTML = newHTML + "<p>Description: " + v_Description + "</p>";
-    newHTML = newHTML + "<p class=\"updatefield\">Update Description (Separte using commas[,]: <textarea class=\"form-control\" id=\"c_Description\" row=\"5\" cols=\"60\">" + v_Description + "</textarea></p>";
     if (typeof v_TagsList !== "undefined") {
-        newHTML = newHTML + "<p>Tags: " + v_TagsList.toString() + "</p>";
-        newHTML = newHTML + "<p class=\"updatefield\">Update Tags (Separte using commas[,]): <textarea class=\"form-control\" id=\"c_TagsList\" row=\"3\" cols=\"40\">" + v_TagsList.toString() + "</textarea></p>";
+        newHTML = newHTML + "<p>Tags (Separte using commas[,]): <div class=\"well\">" + v_TagsList.toString() + "</div>";
     }
     else
-        newHTML = newHTML + "<p class=\"updatefield\">Add Tags: <textarea class=\"form-control\" id=\"c_TagsList\" row=\"5\" cols=\"60\"></textarea></p>";
+        newHTML = newHTML + "<p>Tags (Separte using commas[,]): <div class=\"well\"></div>";
     newHTML = newHTML + "<h4>[STATISICS]</h4>";
     newHTML = newHTML + "<p>View Count: " + v_ViewCount + "</p>";
     newHTML = newHTML + "<p>Like Count: " + v_LikeCount + "</p>";
@@ -335,16 +441,65 @@ function addSearchHTML(i, isLastItem) {
     if (typeof v_TagSuggestions !== "undefined")
         newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
     newHTML = newHTML + "</div></div>";
-    if (isLastItem) {
-        populateWithVideos();
-    }
-    else {
-        getvideoHTML(i, false);
-    }
+    populateWithHTML();
 }
 
-function populateWithVideos() {
+// Add HTML to page
+function populateWithHTML() {
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
-//    $('#update-button').attr('disabled', false);
+    $('#update-button').attr('disabled', false);
 }
+
+////////////////////////////////////////////////////////////////////////////
+//                         -END OF VIDEO SECTION -
+////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////////////
+//                              USER SELECTION
+//                       CHANGES TO ANY DOM COMPONENTS
+////////////////////////////////////////////////////////////////////////////
+
+// Retrieve the next page of playlists.
+function nextPlaylists() {
+    getUserPlaylists(false, nextPlaylistToken);
+}
+
+// Retrieve the previous page of videos.
+function previousPlaylists() {
+    getUserPlaylists(false, prevPlaylistToken);
+}
+
+// Retrieve the next page of videos.
+function nextVids() {
+    requestVideoPlaylist(uploadsPlaylistId, nextPageToken);
+}
+
+// Retrieve the previous page of videos.
+function previousVids() {
+    requestVideoPlaylist(uploadsPlaylistId, prevPageToken);
+}
+
+// User selected a playlist
+function selectedPlaylist(sel) {
+    SelectedPlaylistId = sel.options[sel.selectedIndex].value;
+    SelectedPlaylist = sel.options[sel.selectedIndex].text;
+}
+
+// User selected a video
+function selectedVideo(sel) {
+    var val = sel.options[sel.selectedIndex].value;
+    getVideoData(val, true);
+}
+
+// User selected a playlist in the video defaults section
+function VideoAddPlaylist(sel) {
+    videoSelectedPlaylistId = sel.options[sel.selectedIndex].value;
+    videoSelectedPlaylist = sel.options[sel.selectedIndex].text;
+}
+
+////////////////////////////////////////////////////////////////////////////
+//                         -END OF USER SELECTION -
+////////////////////////////////////////////////////////////////////////////
