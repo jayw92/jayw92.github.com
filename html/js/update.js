@@ -357,7 +357,7 @@ function addSearchHTML() {
     videoHTML = "<iframe width=\"400\" height=\"300\" src=\"" + link + "\" frameborder=\"1\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
 
-    newHTML = newHTML + "<hr><div class=\"panel panel-primary\">";
+    newHTML = newHTML + "<div class=\"panel panel-primary\">";
     newHTML = newHTML + "<div class=\"panel-heading\"><h4>" + snippet['title'] + "</h4></div>";
     newHTML = newHTML + "<div class=\"panel-body\">";
     newHTML = newHTML + thumbnailHTML;
@@ -428,7 +428,7 @@ function addSearchHTML() {
         if (typeof suggestions['tagSuggestions'] !== "undefined")
             newHTML = newHTML + "<p>Tag Suggestions: " + suggestions['tagSuggestions'].toString() + "</p>";
     }
-    newHTML = newHTML + "</div></div>";
+    newHTML = newHTML + "</div></div></div>";
     populateWithHTML();
 }
 
