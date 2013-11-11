@@ -353,7 +353,7 @@ function getVideoData(vID, withHTML) {
 // Generate html after a video was targeted by user
 function addSearchHTML() {
     loadDefaultForm();
-    newHTML = "";
+    newHTML = "<h3>Selected <span class=\"text-muted\"> Video</span></h3><hr>";
     videoHTML = "<iframe width=\"400\" height=\"300\" src=\"" + link + "\" frameborder=\"1\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
 
