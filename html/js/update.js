@@ -35,7 +35,7 @@ function handleAPILoaded() {
 function enableForm() {
     $('#Playlists-status').html("");
     $('#uploadItems-status').html("");
-    
+
     $('#update-button').attr('disabled', true);
     $('#playlist-button').attr('disabled', false);
 }
@@ -258,6 +258,21 @@ function addToPlaylist(vid, startPos, endPos) {
 //                           VIDEO RELATED FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////
 
+
+// Load selected video data to the video default form
+function loadDefaultForm() {
+    $('#c_Title').val(snippet['title']);
+    if (status['embeddable'])
+        $('#c_Embeddable').prop("checked", true);
+    if (status['publicStatsViewable'])
+        $('#c_PublicStatsViewable').prop("checked", true);
+    $('#c_CategoryId').val(snippet['categoryId']);
+    $('#c_PrivacyStatus').val(status['privacyStatus']);
+    $('#c_License').val(status['license']);
+    $('#c_Description').val(snippet['description']);
+    $('#c_TagsList').val(snippet['tags'].toString());
+}
+
 // Apply video default settings to selected video
 function updateVideo() {
     c_Title = $('#c_Title').val();
@@ -337,6 +352,7 @@ function getVideoData(vID, withHTML) {
 
 // Generate html after a video was targeted by user
 function addSearchHTML() {
+    loadDefaultForm();
     newHTML = "";
     videoHTML = "<iframe width=\"400\" height=\"300\" src=\"" + link + "\" frameborder=\"1\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
