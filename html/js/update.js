@@ -1,12 +1,8 @@
 
 // GLOBAL VARIABLES
 var videoID, link, data, snippet, snip, statistics, status, fileDetails, processingDetails, suggestions;
-var v_BitrateBps, v_CategoryId, v_CategoryTitle, v_CommentCount, v_CreationTime, v_Description;
-var v_DislikeCount, v_DurationMs, v_FailureReason, v_FavoriteCount, v_FileName, v_FileSize, v_FileType;
-var v_License, v_LikeCount, v_PartsProcessed, v_PartsProcessedPercent, v_PartsTotal, v_PrivacyStatus;
-var v_ProcessingErrors, v_ProcessingHints, v_ProcessingStatus, v_ProcessingWarnings, v_processingFailureReason;
-var v_RejectionReason, v_TagSuggestions, v_TagsList, v_Thumb_URL, v_Title, v_timeLeftMs;
-var v_UploadStatus, v_ViewCount;
+var v_CategoryTitle, v_FailureReason, v_PartsProcessed, v_PartsProcessedPercent, v_PartsTotal, v_processingFailureReason;
+var v_RejectionReason, v_Thumb_URL, v_timeLeftMs;
 
 var videoHTML, newHTML, str, str2, str3;
 var u_str, updateRequest;
@@ -37,8 +33,9 @@ function handleAPILoaded() {
 
 // Default form looks for page objects
 function enableForm() {
+    $('#Playlists-status').html("");
     $('#uploadItems-status').html("");
-    $('#uploadItems-status').html("");
+    
     $('#update-button').attr('disabled', true);
     $('#playlist-button').attr('disabled', false);
 }
@@ -73,7 +70,6 @@ function requestUserChannelData() {
         part: 'contentDetails'
     });
     request.execute(function(response) {
-        console.log("IN HERE");
         uploadsPlaylistId = response.result.items[0].contentDetails.relatedPlaylists.uploads;
         getUserPlaylists(true);
     });
@@ -127,7 +123,6 @@ function getUserPlaylists(isFirstLoad, pageToken) {
             while (typeof playlists[index] !== "undefined") {
                 var pTitle = playlists[index].snippet.title;
                 var playlistid = playlists[index].id;
-                console.log(playlistid, pTitle);
                 playlistsDropdownHTML = playlistsDropdownHTML + "<option value=\"" + playlistid + "\">" + pTitle + "</option>\n";
                 index++;
             }
@@ -177,13 +172,11 @@ function requestVideoPlaylist(pageToken) {
         playlistItems = response.result.items;
         if (playlistItems) {
             $('#uploadItems-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Found your uploaded videos.</div>");
-            newHTML = "";
             uploadsDropdownHTML = "";
             var index = 0;
             while (typeof playlistItems[index] !== "undefined") {
                 var uPlaylistTitle = playlistItems[index].snippet.title;
                 var videoid = playlistItems[index].snippet.resourceId.videoId;
-                console.log(videoid, uPlaylistTitle);
                 uploadsDropdownHTML = uploadsDropdownHTML + "<option value=\"" + videoid + "\">" + uPlaylistTitle + "</option>\n";
                 index++;
             }
@@ -246,7 +239,7 @@ function addToPlaylist(vid, startPos, endPos) {
     request.execute(function(response) {
         var result = response.result;
         if (result) {
-            $('#uploadItems-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Added [" + v_Title + "] to playlist [" + videoSelectedPlaylist + "].</div>");
+            $('#uploadItems-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Added [" + snippet['title'] + "] to playlist [" + videoSelectedPlaylist + "].</div>");
         }
         else {
             $('#uploadItems-status').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Could not add video to playlist.</div>");
@@ -328,36 +321,9 @@ function getVideoData(vID, withHTML) {
         fileDetails = data['items'][0]['fileDetails'];
         processingDetails = data['items'][0]['processingDetails'];
         suggestions = data['items'][0]['suggestions'];
-        v_Title = snippet['title'];
-        v_Description = snippet['description'];
         v_Thumb_URL = snippet['thumbnails']['default']['url'];
-        v_CategoryId = snippet['categoryId'];
-        v_TagsList = snippet['tags'];
-        v_ViewCount = statistics['viewCount'];
-        v_CommentCount = statistics['commentCount'];
-        v_FavoriteCount = statistics['favoriteCount'];
-        v_LikeCount = statistics['likeCount'];
-        v_DislikeCount = statistics['dislikeCount'];
-        v_PrivacyStatus = status['privacyStatus'];
-        v_UploadStatus = status['uploadStatus'];
-        v_License = status['license'];
-        if (typeof fileDetails !== "undefined") {
-            v_FileName = fileDetails['fileName'];
-            v_FileSize = fileDetails['fileSize'];
-            v_FileType = fileDetails['fileType'];
-            v_DurationMs = fileDetails['durationMs'];
-            v_BitrateBps = fileDetails['bitrateBps'];
-            v_CreationTime = fileDetails['creationTime'];
-        }
-        v_ProcessingStatus = processingDetails['processingStatus'];
-        if (typeof suggestions !== "undefined") {
-            v_ProcessingErrors = suggestions['processingErrors'];
-            v_ProcessingWarnings = suggestions['processingWarnings'];
-            v_ProcessingHints = suggestions['processingHints'];
-            v_TagSuggestions = suggestions['tagSuggestions'];
-        }
         var categoryRequest = gapi.client.youtube.videoCategories.list({
-            id: v_CategoryId,
+            id: snippet['categoryId'],
             part: 'snippet'
         });
         categoryRequest.execute(function(res) {
@@ -371,56 +337,60 @@ function getVideoData(vID, withHTML) {
 
 // Generate html after a video was targeted by user
 function addSearchHTML() {
-    videoHTML = "<iframe width=\"480\" height=\"360\" src=\"" + link + "\" frameborder=\"0\" allowfullscreen></iframe>";
+    newHTML = "";
+    videoHTML = "<iframe width=\"400\" height=\"300\" src=\"" + link + "\" frameborder=\"1\" allowfullscreen></iframe>";
     thumbnailHTML = "<p><img data-src=\"holder.js/120x90\" src=\"" + v_Thumb_URL + "\"></p>";
 
     newHTML = newHTML + "<hr><div class=\"panel panel-primary\">";
-    newHTML = newHTML + "<div class=\"panel-heading\"><h4>" + v_Title + "</h4></div>";
+    newHTML = newHTML + "<div class=\"panel-heading\"><h4>" + snippet['title'] + "</h4></div>";
     newHTML = newHTML + "<div class=\"panel-body\">";
     newHTML = newHTML + thumbnailHTML;
     newHTML = newHTML + "<p>Video ID: " + videoID + "</p>";
+    newHTML = newHTML + "<p>eTag: " + data['items'][0]['etag'] + "</p>";
+    newHTML = newHTML + "<p>Published At: " + snippet['publishedAt'] + "</p>";
     newHTML = newHTML + "<p>Video Category: " + v_CategoryTitle + "</p>";
-    newHTML = newHTML + categoryDropdownHTML;
-    newHTML = newHTML + "<p>Description: " + v_Description + "</p>";
-    if (typeof v_TagsList !== "undefined") {
-        newHTML = newHTML + "<p>Tags (Separte using commas[,]): <div class=\"well\">" + v_TagsList.toString() + "</div>";
+    newHTML = newHTML + "<p>Description: " + snippet['description'] + "</p>";
+    if (typeof snippet['tags'] !== "undefined") {
+        newHTML = newHTML + "<p>Tags (Separte using commas[,]): <div class=\"well\">" + snippet['tags'].toString() + "</div>";
     }
     else
         newHTML = newHTML + "<p>Tags (Separte using commas[,]): <div class=\"well\"></div>";
     newHTML = newHTML + "<h4>[STATISICS]</h4>";
-    newHTML = newHTML + "<p>View Count: " + v_ViewCount + "</p>";
-    newHTML = newHTML + "<p>Like Count: " + v_LikeCount + "</p>";
-    newHTML = newHTML + "<p>Dislike Count: " + v_DislikeCount + "</p>";
-    newHTML = newHTML + "<p>Favorite Count: " + v_FavoriteCount + "</p>";
-    newHTML = newHTML + "<p>Comment Count: " + v_CommentCount + "</p>";
+    newHTML = newHTML + "<p>View Count: " + statistics['viewCount'] + "</p>";
+    newHTML = newHTML + "<p>Like Count: " + statistics['likeCount'] + "</p>";
+    newHTML = newHTML + "<p>Dislike Count: " + statistics['dislikeCount'] + "</p>";
+    newHTML = newHTML + "<p>Favorite Count: " + statistics['favoriteCount'] + "</p>";
+    newHTML = newHTML + "<p>Comment Count: " + statistics['commentCount'] + "</p>";
     newHTML = newHTML + "<h4>[STATUS]</h4>";
-    newHTML = newHTML + "<p>Privacy Status: " + v_PrivacyStatus + "</p>";
-    newHTML = newHTML + "<p>Upload Status: " + v_UploadStatus + "</p>";
-    if (v_UploadStatus === 'failed') {
+    newHTML = newHTML + "<p>Embeddable: " + status['embeddable'] + "</p>";
+    newHTML = newHTML + "<p>Public Stats Viewable: " + status['publicStatsViewable'] + "</p>";
+    newHTML = newHTML + "<p>Privacy Status: " + status['privacyStatus'] + "</p>";
+    newHTML = newHTML + "<p>Upload Status: " + status['uploadStatus'] + "</p>";
+    if (status['uploadStatus'] === 'failed') {
         v_FailureReason = status['failureReason'];
         newHTML = newHTML + "<p>FAILURE REASON: " + v_FailureReason + "</p>";
     }
-    if (v_UploadStatus === 'rejected') {
+    if (status['uploadStatus'] === 'rejected') {
         v_RejectionReason = status['rejectionReason'];
         newHTML = newHTML + "<p>REJECTION REASON: " + v_RejectionReason + "</p>";
     }
-    newHTML = newHTML + "<p>License Status: " + v_License + "</p>";
+    newHTML = newHTML + "<p>License Status: " + status['license'] + "</p>";
     if (typeof fileDetails !== "undefined") {
         newHTML = newHTML + "<h4>[FILE DETAILS]</h4>";
-        newHTML = newHTML + "<p>File Name: " + v_FileName + "</p>";
-        newHTML = newHTML + "<p>File Size: " + v_FileSize + "</p>";
-        newHTML = newHTML + "<p>File Type: " + v_FileType + "</p>";
-        newHTML = newHTML + "<p>Duration: " + v_DurationMs / 1000 + " seconds</p>";
-        newHTML = newHTML + "<p>Bitrate: " + v_BitrateBps + " bps (bits per second)</p>";
-        newHTML = newHTML + "<p>Date Created: " + v_CreationTime + "</p>";
+        newHTML = newHTML + "<p>File Name: " + fileDetails['fileName'] + "</p>";
+        newHTML = newHTML + "<p>File Size: " + fileDetails['fileSize'] + "</p>";
+        newHTML = newHTML + "<p>File Type: " + fileDetails['fileType'] + "</p>";
+        newHTML = newHTML + "<p>Duration: " + fileDetails['durationMs'] / 1000 + " seconds</p>";
+        newHTML = newHTML + "<p>Bitrate: " + fileDetails['bitrateBps'] + " bps (bits per second)</p>";
+        newHTML = newHTML + "<p>Date Created: " + fileDetails['creationTime'] + "</p>";
     }
     newHTML = newHTML + "<h4>[VIDEO PROCESSING]</h4>";
-    newHTML = newHTML + "<p>Processing Status: " + v_ProcessingStatus + "</p>";
-    if (v_ProcessingStatus === 'failed') {
+    newHTML = newHTML + "<p>Processing Status: " + processingDetails['processingStatus'] + "</p>";
+    if (processingDetails['processingStatus'] === 'failed') {
         v_processingFailureReason = processingDetails['processingFailureReason'];
         newHTML = newHTML + "<p>PROCESSING FAILURE REASON: " + v_processingFailureReason + "</p>";
     }
-    if (v_ProcessingStatus === 'processing') {
+    if (processingDetails['processingStatus'] === 'processing') {
         v_PartsTotal = processingDetails['processingProgress']['partsTotal'];
         newHTML = newHTML + "<p>Parts to be processed: " + v_PartsTotal + "</p>";
         v_PartsProcessed = processingDetails['processingProgress']['partsProcessed'];
@@ -432,14 +402,14 @@ function addSearchHTML() {
     }
 
     newHTML = newHTML + "<h4>[VIDEO SUGGESTIONS]</h4>";
-    if (typeof v_ProcessingErrors !== "undefined")
-        newHTML = newHTML + "<p>Processing Erros (Causes a failed upload): " + v_ProcessingErrors.toString() + "</p>";
-    if (typeof v_ProcessingWarnings !== "undefined")
-        newHTML = newHTML + "<p>Processing Warnings (Causes difficulties in processing): " + v_ProcessingWarnings.toString() + "</p>";
-    if (typeof v_ProcessingHints !== "undefined")
-        newHTML = newHTML + "<p>Processing Hints (Hints for improving processing of video): " + v_ProcessingHints.toString() + "</p>";
-    if (typeof v_TagSuggestions !== "undefined")
-        newHTML = newHTML + "<p>Tag Suggestions: " + v_TagSuggestions.toString() + "</p>";
+    if (typeof suggestions['processingErrors'] !== "undefined")
+        newHTML = newHTML + "<p>Processing Erros (Causes a failed upload): " + suggestions['processingErrors'].toString() + "</p>";
+    if (typeof suggestions['processingWarnings'] !== "undefined")
+        newHTML = newHTML + "<p>Processing Warnings (Causes difficulties in processing): " + suggestions['processingWarnings'].toString() + "</p>";
+    if (typeof suggestions['processingHints'] !== "undefined")
+        newHTML = newHTML + "<p>Processing Hints (Hints for improving processing of video): " + suggestions['processingHints'].toString() + "</p>";
+    if (typeof suggestions['tagSuggestions'] !== "undefined")
+        newHTML = newHTML + "<p>Tag Suggestions: " + suggestions['tagSuggestions'].toString() + "</p>";
     newHTML = newHTML + "</div></div>";
     populateWithHTML();
 }
