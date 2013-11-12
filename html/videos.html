@@ -108,14 +108,33 @@
                                 <span class="input-group-addon">Title</span> <input class="form-control" id="c_Title" type="text">
                             </div><br>
 
+                            <div class="form-group well">
+                                <p id="uploaded-image" class="text-center"></p>
+                                <div id="browsefile">
+                                    <label for="thumbnailFile">Add a default thumbnail</label>
+                                    <input type="file" accept="image/*" id="thumbnailFile" onchange="addthumbnail()">
+                                </div>
+                                <ul>
+                                    <li>
+                                        Maximum file size: 2 MB
+                                    </li>
+                                    <li>
+                                        Accepted Media MIME types: image/jpeg, image/png, application/octet-stream
+                                    </li>
+                                </ul>
+                                <p class="text-center">
+                                    <button class="btn btn-sm btn-primary" id="delete-thumbnail" onclick="deleteImage()">Remove Thumbnail</button>
+                                </p>
+                            </div>
+
                             <div class="checkbox">
                                 <label>
-                                    <input id="c_Embeddable" type="checkbox"> Embeddable?
+                                    <input id="c_Embeddable" type="checkbox"> Make Video Embeddable
                                 </label>
                             </div>
                             <div id="c_PublicStatsViewable" class="checkbox">
                                 <label>
-                                    <input type="checkbox"> Public Stats Viewable?
+                                    <input type="checkbox"> Make Public Video Stats Viewable
                                 </label>
                             </div>
 
@@ -161,7 +180,7 @@
                             </div>
 
                             <p class="text-center">
-                                <button class="btn btn-large btn-primary navbar-center" id="update-button" disabled onclick="updateVideo()">Add Default Settings to Video</button>
+                                <button class="btn btn-large btn-primary" id="update-button" disabled onclick="updateVideo()">Add Default Settings to Video</button>
                             </p>
 
                         </div>

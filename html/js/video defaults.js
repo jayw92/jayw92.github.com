@@ -10,6 +10,7 @@ var nextPageToken, prevPageToken, playlistItems, uploadsPlaylistId, uploadsDropd
 var playlists, playlistsDropdownHTML;
 var videoSelectedPlaylistId, videoSelectedPlaylist;
 var cateSnip, CategoryTitleReturn, categoryDropdownHTML;
+var thumbnail_url, thumbnailimage;
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -22,7 +23,7 @@ function handleAPILoaded() {
     $('#uploadsSelectionBox').attr('disabled', true);
     $('#update-status').html("");
     categoryDropdownHTML = playlistsDropdownHTML = uploadsDropdownHTML = videoHTML = "";
-    videoSelectedPlaylistId = "0";
+    videoSelectedPlaylistId = thumbnail_url = "0";
     getCategoryList();
 }
 
@@ -220,6 +221,23 @@ function addToPlaylist(vid, startPos, endPos) {
 //                           VIDEO RELATED FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////
 
+// Upload thumbnail to video
+function setThumbnail() {
+    var request = gapi.client.youtube.playlistItems.insert({
+        videoID: videoID
+    });
+    request.execute(function(response) {
+        var result = response.result;
+            console.log(result);
+        if (result) {
+           $('#uploaded-image').html("<div class=\"alert alert-success\"><strong>Success!</strong> Thumbnail added to video.</div><img id=\"preview-img\" src=\"" + thumbnailimage + "\" height=\"90\" width=\"120\">");
+        }
+        else {
+            $('#uploaded-image').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Upload to youtube failed.</div>");
+        }
+    });
+}
+
 
 // Load selected video data to the video default form
 function loadDefaultForm() {
@@ -275,6 +293,9 @@ function updateVideo() {
         if (res) {
             if (videoSelectedPlaylistId !== "0") {
                 addToPlaylist(videoID);
+            }
+            if (thumbnail_url !== "0") {
+                setThumbnail();
             }
             getVideoData(videoID, true);
             $('#update-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Updated video details.</div>");
@@ -437,6 +458,36 @@ function selectedVideo(sel) {
 function VideoAddPlaylist(sel) {
     videoSelectedPlaylistId = sel.options[sel.selectedIndex].value;
     videoSelectedPlaylist = sel.options[sel.selectedIndex].text;
+}
+
+// User selected to delete thumbnail
+function deleteImage() {
+    thumbnail_url = "0";
+    $('#uploaded-image').html("");
+}
+// User selected to add a thumbnail
+function addthumbnail() {
+    var thumbnail = document.getElementById("thumbnailFile");
+    var fileSize = thumbnail.files[0].size;
+
+    // Image size less than 2MB, preview image
+    if (fileSize < 2097152) {
+        if (thumbnail.files && thumbnail.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                thumbnailimage = e.target.result;
+                thumbnail_url = thumbnail.value;
+                $('#uploaded-image').html("<div class=\"alert alert-success\"><strong>Success!</strong> Thumbnail selected.</div><img id=\"preview-img\" src=\"" + thumbnailimage + "\" height=\"90\" width=\"120\">");
+            }
+
+            reader.readAsDataURL(thumbnail.files[0]);
+        }
+    }
+    else {
+        $('#uploaded-image').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Size needs to be less than 2MB.</div>");
+    }
+
 }
 
 ////////////////////////////////////////////////////////////////////////////
