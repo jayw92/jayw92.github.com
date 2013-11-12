@@ -3,17 +3,12 @@
 var videoID, link, data, snippet, snip, statistics, status, fileDetails, processingDetails, suggestions;
 var v_CategoryTitle, v_FailureReason, v_PartsProcessed, v_PartsProcessedPercent, v_PartsTotal, v_processingFailureReason;
 var v_RejectionReason, v_Thumb_URL, v_timeLeftMs;
-
 var videoHTML, newHTML, str, str2, str3;
-var u_str, updateRequest;
-
+var updateRequest;
 var c_CategoryId, c_Description, c_License, c_PrivacyStatus, c_TagsList, c_Title, c_Embeddable, c_PublicStatsViewable;
-
-var nextPageToken, prevPageToken, playlistItems, uploadsPlaylistId, uploadsDropdownHTML, channelId;
-
-var prevPlaylistToken, nextPlaylistToken, playlists, playlistsDropdownHTML, SelectedPlaylistId, SelectedPlaylist;
-var p_Title, p_Description, p_PrivacyStatus, videoSelectedPlaylistId, videoSelectedPlaylist;
-
+var nextPageToken, prevPageToken, playlistItems, uploadsPlaylistId, uploadsDropdownHTML;
+var playlists, playlistsDropdownHTML;
+var videoSelectedPlaylistId, videoSelectedPlaylist;
 var cateSnip, CategoryTitleReturn, categoryDropdownHTML;
 
 
@@ -25,7 +20,7 @@ var cateSnip, CategoryTitleReturn, categoryDropdownHTML;
 function handleAPILoaded() {
     enableForm();
     $('#uploadsSelectionBox').attr('disabled', true);
-    $('#playlistsSelectionBox').attr('disabled', true);
+    $('#update-status').html("");
     categoryDropdownHTML = playlistsDropdownHTML = uploadsDropdownHTML = videoHTML = "";
     videoSelectedPlaylistId = "0";
     getCategoryList();
@@ -33,11 +28,8 @@ function handleAPILoaded() {
 
 // Default form looks for page objects
 function enableForm() {
-    $('#Playlists-status').html("");
     $('#uploadItems-status').html("");
-
     $('#update-button').attr('disabled', true);
-    $('#playlist-button').attr('disabled', false);
 }
 
 // Get Category Titles from Youtube
@@ -87,6 +79,7 @@ function requestUserChannelData() {
 
 // Get All playlists
 function getUserPlaylists(isFirstLoad, pageToken) {
+    $('#deletelist-button').attr('disabled', true);
     var requestOptions = {
         mine: true,
         part: 'id,snippet',
@@ -116,7 +109,6 @@ function getUserPlaylists(isFirstLoad, pageToken) {
 
         playlists = response.result.items;
         if (playlists) {
-            $('#Playlists-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Found playlists under this account.</div>");
             playlistsDropdownHTML = "";
             var index = 0;
             while (typeof playlists[index] !== "undefined") {
@@ -125,8 +117,6 @@ function getUserPlaylists(isFirstLoad, pageToken) {
                 playlistsDropdownHTML = playlistsDropdownHTML + "<option value=\"" + playlistid + "\">" + pTitle + "</option>\n";
                 index++;
             }
-            $('#playlistsSelectionBox').html(playlistsDropdownHTML);
-            $('#playlistsSelectionBox').attr('disabled', false);
             playlistsDropdownHTML = playlistsDropdownHTML + "<option selected=\"selected\" value=\"" + 0 + "\">Select a Playlist</option>\n"
             $('#c_PlaylistId').html(playlistsDropdownHTML);
 
@@ -134,17 +124,17 @@ function getUserPlaylists(isFirstLoad, pageToken) {
                 requestVideoPlaylist();
 
         } else {
-            $('#Playlists-status').html("<div class=\"alert alert-danger\"><strong>Sorry!</strong> Could not find any playlists under this account.</div>");
+            $('#uploadItems-status').html("<div class=\"alert alert-danger\"><strong>Sorry!</strong> Could not find any playlists under this account.</div>");
         }
     });
 }
 
-// Get playlist using playlist ID
+// Get playlist for uploads
 function requestVideoPlaylist(pageToken) {
     var requestOptions = {
         playlistId: uploadsPlaylistId,
         part: 'snippet',
-        maxResults: 10
+        maxResults: 20
     };
     if (pageToken) {
         requestOptions.pageToken = pageToken;
@@ -183,33 +173,6 @@ function requestVideoPlaylist(pageToken) {
             $('#uploadsSelectionBox').attr('disabled', false);
         } else {
             $('#uploadItems-status').html("<div class=\"alert alert-danger\"><strong>Sorry!</strong> You have not uploaded any videos.</div>");
-        }
-    });
-}
-
-// Create a playlist
-function createPlaylist() {
-    var request = gapi.client.youtube.playlists.insert({
-        part: 'snippet,status',
-        resource: {
-            snippet: {
-                title: 'Test Playlist',
-                description: 'A private playlist created with the YouTube API'
-            },
-            status: {
-                privacyStatus: 'private'
-            }
-        }
-    });
-    request.execute(function(response) {
-        var result = response.result;
-        if (result) {
-            uploadsPlaylistId = result.id;
-            $('#playlist-id').val(uploadsPlaylistId);
-            $('#playlist-title').html(result.snippet.title);
-            $('#playlist-description').html(result.snippet.description);
-        } else {
-            $('#status').html('Could not create playlist');
         }
     });
 }
@@ -437,7 +400,6 @@ function addSearchHTML() {
 function populateWithHTML() {
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
-    $('#update-button').attr('disabled', false);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -451,16 +413,6 @@ function populateWithHTML() {
 //                       CHANGES TO ANY DOM COMPONENTS
 ////////////////////////////////////////////////////////////////////////////
 
-// Retrieve the next page of playlists.
-function nextPlaylists() {
-    getUserPlaylists(false, nextPlaylistToken);
-}
-
-// Retrieve the previous page of videos.
-function previousPlaylists() {
-    getUserPlaylists(false, prevPlaylistToken);
-}
-
 // Retrieve the next page of videos.
 function nextVids() {
     requestVideoPlaylist(uploadsPlaylistId, nextPageToken);
@@ -471,16 +423,13 @@ function previousVids() {
     requestVideoPlaylist(uploadsPlaylistId, prevPageToken);
 }
 
-// User selected a playlist
-function selectedPlaylist(sel) {
-    SelectedPlaylistId = sel.options[sel.selectedIndex].value;
-    SelectedPlaylist = sel.options[sel.selectedIndex].text;
-}
-
 // User selected a video
 function selectedVideo(sel) {
-    var val = sel.options[sel.selectedIndex].value;
-    getVideoData(val, true);
+    $('#uploadItems-status').html("");
+    $('#update-status').html("");
+    videoID = sel.options[sel.selectedIndex].value;
+    getVideoData(videoID, true);
+    $('#update-button').attr('disabled', false);
 }
 
 // User selected a playlist in the video defaults section
