@@ -223,7 +223,7 @@ function addToPlaylist(vid, startPos, endPos) {
 
 // Upload thumbnail to video
 function setThumbnail() {
-    var request = gapi.client.youtube.playlistItems.insert({
+    var request = gapi.client.youtube.thumbnails.set({
         videoID: videoID
     });
     request.execute(function(response) {
