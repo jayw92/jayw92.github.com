@@ -224,7 +224,8 @@ function addToPlaylist(vid, startPos, endPos) {
 // Upload thumbnail to video
 function setThumbnail() {
     var request = gapi.client.youtube.thumbnails.set({
-        videoID: videoID
+        videoID: videoID,
+        media_body:thumbnail_url
     });
     request.execute(function(response) {
         var result = response.result;
