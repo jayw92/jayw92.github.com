@@ -81,7 +81,7 @@
             <div class="row">
 
                 <div class="col-md-6 container" id="playlist-container">
-                    <h3>User <span class="text-muted"> Playlists</span></h3>
+                    <h3>User<span class="text-muted"> Playlists</span></h3>
 
                     <div id="Playlists-status" class="container"></div>
 
@@ -92,56 +92,79 @@
                     <div class="button-container text-center">
                         <button id="prevlist-button" class="btn btn-large btn-primary paging-button" disabled onclick="previousPlaylists()">Previous</button>
                         <button id="nextlist-button" class="btn btn-large btn-primary paging-button" disabled onclick="nextPlaylists()">Next</button>
-                        <button id="deletelist-button" class="btn btn-large btn-primary paging-button" disabled onclick="deleteSelectedPlaylist()">Delete</button><hr>
+                        <button id="deletelist-button" class="btn btn-large btn-primary paging-button" disabled onclick="deleteSelectedPlaylist()">Delete</button>
+
+                        <!-- Button trigger modal -->
+                        <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#AddPlylistModal">
+                            Add New Playlist</button><hr>
                     </div>
 
-                    <div id="addlist-status" class="container"></div>
-                    <div class="panel panel-primary">
-                        <div class="panel-heading"><h4>Add New Playlist</h4></div>
-                        <div class="panel-body">
-                            <div class="input-group input-group-md">
-                                <span class="input-group-addon">Title</span> <input class="form-control" id="p_Title" type="text">
-                            </div><br>
-
-                            <div class="input-group">
-                                <span class="input-group-addon">Privacy Status</span> 
-                                <select id="p_PrivacyStatus" class="form-control">
-                                    <option value="private">Private</option>
-                                    <option value="public">Public</option>
-                                    <option value="unlisted">Unlisted</option>
-                                </select>
-                            </div><br>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">Description</div>
-                                <div class="panel-body">
-                                    <textarea class="form-control" id="p_Description" rows="4" cols="60"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">Add Tags (ex: tag1,tag2,tag3,tags)</div>
-                                <div class="panel-body">
-                                    <textarea class="form-control" id="p_Tags" rows="2" cols="40"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="text-center">
-                                <button id="addlist-button" class="btn btn-large btn-primary paging-button" disabled onclick="addNewPlaylist()">Add New Playlist</button>
-                            </div>
-
-                        </div>
+                    <div id="addlist-status" class="container"></div><br>
+                    <div id='playlist-details' class="container">
+                        
                     </div>
+                    
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="AddPlylistModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">Add a new Playlist</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon">Title</span> <input class="form-control" id="p_Title" type="text">
+                                            </div><br>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Privacy Status</span> 
+                                                <select id="p_PrivacyStatus" class="form-control">
+                                                    <option value="private">Private</option>
+                                                    <option value="public">Public</option>
+                                                    <option value="unlisted">Unlisted</option>
+                                                </select>
+                                            </div><br>
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">Description</div>
+                                                <div class="panel-body">
+                                                    <textarea class="form-control" id="p_Description" rows="4" cols="60"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">Add Tags (ex: tag1,tag2,tag3,tags)</div>
+                                                <div class="panel-body">
+                                                    <textarea class="form-control" id="p_Tags" rows="2" cols="40"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button id="addlist-button" class="btn btn-large btn-primary paging-button" disabled onclick="addNewPlaylist()">Add New Playlist</button>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
 
                 </div>
 
-                <div class="col-md-4">
-                    <h3>Uploaded<span class="text-muted"> Videos</span></h3>
+                <div class="col-md-6">
+                    <h3>Playlist<span class="text-muted"> Videos</span></h3>
 
-                    <div id="uploadItems-status" class="container"></div>
+                    <div id="playlistItem-status" class="container"></div>
 
                     <div class="container">
-                        <select multiple disabled id="uploadsSelectionBox" onchange="selectedVideo(this)" class="form-control"></select>
+                        <select multiple disabled id="playlistItemSelectionBox" onchange="selectedVideo(this)" class="form-control"></select>
                     </div>
                     <br>
 
@@ -156,78 +179,10 @@
 
                     <div class="container text-center" id="VideoPic"></div><br>
 
-                    <div class="panel panel-primary">
-                        <div class="panel-heading"><h4>Video Default</h4></div>
-                        <div class="panel-body">
-                            <div class="input-group input-group-lg">
-                                <span class="input-group-addon">Title</span> <input class="form-control" id="c_Title" type="text">
-                            </div><br>
-
-                            <div class="checkbox">
-                                <label>
-                                    <input id="c_Embeddable" type="checkbox"> Embeddable?
-                                </label>
-                            </div>
-                            <div id="c_PublicStatsViewable" class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Public Stats Viewable?
-                                </label>
-                            </div>
-
-                            <div class="input-group">
-                                <span class="input-group-addon">Video Category</span> 
-                                <select id="c_CategoryId" class="form-control"></select>
-                            </div><br>
-
-                            <div class="input-group">
-                                <span class="input-group-addon">Add to Playlist</span> 
-                                <select id="c_PlaylistId" class="form-control" onchange="VideoAddPlaylist(this)"></select>
-                            </div><br>
-
-                            <div class="input-group">
-                                <span class="input-group-addon">Privacy Status</span> 
-                                <select id="c_PrivacyStatus" class="form-control">
-                                    <option value="private">Private</option>
-                                    <option value="public">Public</option>
-                                    <option value="unlisted">Unlisted</option>
-                                </select>
-                            </div><br>
-
-                            <div class="input-group">
-                                <span class="input-group-addon">Video License</span>
-                                <select id="c_License" class="form-control">
-                                    <option value="creativeCommon">Creative Common License</option>
-                                    <option value="youtube">Youtube License</option>
-                                </select>
-                            </div><br>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">Description</div>
-                                <div class="panel-body">
-                                    <textarea class="form-control" id="c_Description" rows="4" cols="60"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">Add Tags (ex: tag1,tag2,tag3,tags)</div>
-                                <div class="panel-body">
-                                    <textarea class="form-control" id="c_TagsList" rows="2" cols="40"></textarea>
-                                </div>
-                            </div>
-
-                            <p class="text-center">
-                                <button class="btn btn-large btn-primary navbar-center" id="update-button" disabled onclick="updateVideo()">Add Default Settings to Video</button>
-                            </p>
-
-                        </div>
-                    </div>
 
                     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
                     <script src="js/auth.js"></script>
                     <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
-                </div>
-
-                <div class="col-md-4 container" id="search-container">
                 </div>
 
             </div>

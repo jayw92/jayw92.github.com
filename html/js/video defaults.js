@@ -223,6 +223,7 @@ function addToPlaylist(vid, startPos, endPos) {
 
 // Load selected video data to the video default form
 function loadDefaultForm() {
+    $('#c_PlaylistId').html(playlistsDropdownHTML);
     $('#c_Title').val(snippet['title']);
     if (status['embeddable'])
         $('#c_Embeddable').prop("checked", true);
