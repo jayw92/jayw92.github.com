@@ -143,9 +143,6 @@ function getUserPlaylists(isFirstLoad, pageToken) {
             playlistsDropdownHTML = playlistsDropdownHTML + "<option selected=\"selected\" value=\"" + 0 + "\">Select a Playlist</option>\n"
             $('#c_PlaylistId').html(playlistsDropdownHTML);
 
-            if (isFirstLoad)
-                requestVideoPlaylist();
-
         } else {
             $('#Playlists-status').html("<div class=\"alert alert-danger\"><strong>Sorry!</strong> Could not find any playlists under this account.</div>");
         }
@@ -303,12 +300,12 @@ function previousPlaylists() {
 
 // Retrieve the next page of videos.
 function nextVids() {
-    requestVideoPlaylist(uploadsPlaylistId, nextPageToken);
+    requestPlaylistItems(SelectedPlaylistId, nextPageToken);
 }
 
 // Retrieve the previous page of videos.
 function previousVids() {
-    requestVideoPlaylist(uploadsPlaylistId, prevPageToken);
+    requestPlaylistItems(SelectedPlaylistId, prevPageToken);
 }
 
 // User selected a playlist

@@ -101,8 +101,43 @@
 
                     <div class="container text-center" id="VideoPic"></div><br>
 
+                    <div class="container text-center">
+                        <!-- Button trigger modal -->
+                        <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#SelectProfileModal">
+                            Access Profiles</button>
+                    </div><br>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="SelectProfileModal" tabindex="-1" role="dialog" aria-labelledby="SelectProfileModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="SelectProfileModalLabel">Select a profile to load</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <select multiple disabled id="profileSelector" onchange="selectedProfile(this)" class="form-control"></select>
+                                    </div><hr>
+                                    <h4>Add current defaults to new profile</h4>
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Save Profile As..</span> <input class="form-control" id="profile_name" type="text">
+                                    </div><br>
+                                    <div class="container text-right">
+                                        <button class="btn btn-primary" id="addProfile-button">Add New Defaults Profile</button>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    Click anywhere outside popup box to close.
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
                     <div class="panel panel-primary">
-                        <div class="panel-heading"><h4>Video Default</h4></div>
+                        <div class="panel-heading">
+                            <h4>Video Default</h4>
+                        </div>
                         <div class="panel-body">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-addon">Title</span> <input class="form-control" id="c_Title" type="text">
@@ -183,34 +218,31 @@
                                 <button class="btn btn-large btn-primary" id="update-button" disabled onclick="updateVideo()">Add Default Settings to Video</button>
                             </p>
 
+                            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+                            <script src="js/auth.js"></script>
+                            <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
                         </div>
+
+                        <div class="col-md-6 container" id="search-container">
+                        </div>
+
                     </div>
 
-                    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-                    <script src="js/auth.js"></script>
-                    <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+
+                    <!-- FOOTER -->
+                    <footer>
+                        <hr>
+                        <p class="pull-right"><a href="#">Back to top</a></p>
+                        <p>&copy; Youtube Capstone 2013.</p>
+                    </footer>
+
                 </div>
 
-                <div class="col-md-6 container" id="search-container">
-                </div>
-
-            </div>
-
-
-            <!-- FOOTER -->
-            <footer>
-                <hr>
-                <p class="pull-right"><a href="#">Back to top</a></p>
-                <p>&copy; Youtube Capstone 2013.</p>
-            </footer>
-
-        </div>
-
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="../assets/js/jquery.js"></script>
-        <script src="../dist/js/bootstrap.min.js"></script>
-        <script src="../assets/js/holder.js"></script>
-    </body>
-</html>
+                <!-- Bootstrap core JavaScript
+                ================================================== -->
+                <!-- Placed at the end of the document so the pages load faster -->
+                <script src="../assets/js/jquery.js"></script>
+                <script src="../dist/js/bootstrap.min.js"></script>
+                <script src="../assets/js/holder.js"></script>
+                </body>
+                </html>
