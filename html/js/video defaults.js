@@ -452,7 +452,7 @@ function getProfiles() {
             profilesHTML = "";
             for (var pname in profilelist)
             {
-                if (obj.hasOwnProperty(pname)) {
+                if (profilelist.hasOwnProperty(pname)) {
                     profilesHTML = profilesHTML + "<option value=\"" + pname + "\">" + pname + "</option>\n";
                 }
             }
