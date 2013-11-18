@@ -253,13 +253,13 @@ function setThumbnail() {
 function loadDefaultForm() {
     $('#c_PlaylistId').html(playlistsDropdownHTML);
     $('#c_Title').val(snippet['title']);
-    if (status['embeddable'])
+    if (vidStatus['embeddable'])
         $('#c_Embeddable').prop("checked", true);
-    if (status['publicStatsViewable'])
+    if (vidStatus['publicStatsViewable'])
         $('#c_PublicStatsViewable').prop("checked", true);
     $('#c_CategoryId').val(snippet['categoryId']);
-    $('#c_PrivacyStatus').val(status['privacyStatus']);
-    $('#c_License').val(status['license']);
+    $('#c_PrivacyStatus').val(vidStatus['privacyStatus']);
+    $('#c_License').val(vidStatus['license']);
     $('#c_Description').val(snippet['description']);
     if (typeof snippet['tags'] !== "undefined")
         $('#c_TagsList').val(snippet['tags'].toString());
