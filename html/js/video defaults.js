@@ -24,6 +24,7 @@ function handleAPILoaded() {
     $('#profileSelector').attr('disabled', true);
     $('#accessProfilesButton').attr('disabled', true);
     $('#loadProfilebutton').attr('disabled', true);
+    $('#deleteProfilebutton').attr('disabled', true);
     $('#update-status').html("");
     categoryDropdownHTML = playlistsDropdownHTML = uploadsDropdownHTML = videoHTML = selected_Profile = profilesHTML = "";
     videoSelectedPlaylistId = thumbnail_url = "";
@@ -445,6 +446,8 @@ function populateWithHTML() {
 
 // Check & setup profiles selector
 function getProfiles() {
+    $('#loadProfilebutton').attr('disabled', true);
+    $('#deleteProfilebutton').attr('disabled', true);
     if (typeof (Storage) !== "undefined")
     {
         // Yes! localStorage and sessionStorage support!
@@ -490,12 +493,21 @@ function loadSelectorProfile() {
         $('#c_TagsList').val(profile['Tags'].toString());
 }
 
+// Delete selected profile
+function deleteSelectorProfile() {
+    var profilelist = JSON.parse(localStorage.getItem('Profiles'));
+    delete profilelist[selected_Profile];
+    localStorage.setItem('Profiles', JSON.stringify(profilelist));
+    getProfiles();
+}
+
 // Selector onchange() for profiles
 function selectedProfile(sel) {
     selected_Profile = sel.options[sel.selectedIndex].text;
     load_Profile_Data();
     $('#SelectProfileModalLabel').html('Profile Settings - ' + selected_Profile);
     $('#loadProfilebutton').attr('disabled', false);
+    $('#deleteProfilebutton').attr('disabled', false);
 }
 
 // Load selected Profile into the form for profile settings
