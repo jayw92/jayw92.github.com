@@ -1,6 +1,6 @@
 
 // GLOBAL VARIABLES
-var videoID, link, data, snippet, snip, statistics, status, fileDetails, processingDetails, suggestions;
+var videoID, link, data, snippet, snip, statistics, vidStatus, fileDetails, processingDetails, suggestions;
 var v_CategoryTitle, v_FailureReason, v_PartsProcessed, v_PartsProcessedPercent, v_PartsTotal, v_processingFailureReason;
 var v_RejectionReason, v_Thumb_URL, v_timeLeftMs;
 var videoHTML, newHTML, str, str2, str3;
@@ -286,14 +286,14 @@ function updateVideo() {
     snippet['description'] = c_Description;
     snippet['tags'] = c_TagsList;
     snippet['categoryId'] = c_CategoryId;
-    status['license'] = c_License;
-    status['privacyStatus'] = c_PrivacyStatus;
-    status['embeddable'] = c_Embeddable;
-    status['publicStatsViewable'] = c_PublicStatsViewable;
+    vidStatus['license'] = c_License;
+    vidStatus['privacyStatus'] = c_PrivacyStatus;
+    vidStatus['embeddable'] = c_Embeddable;
+    vidStatus['publicStatsViewable'] = c_PublicStatsViewable;
 
     var requestOptions = {
         part: 'snippet,status',
-        resource: {id: videoID, snippet: snippet, status: status}
+        resource: {id: videoID, snippet: snippet, status: vidStatus}
     };
 
     updateRequest = gapi.client.youtube.videos.update(requestOptions);
@@ -328,7 +328,7 @@ function getVideoData(vID, withHTML) {
         data = response;
         snippet = data['items'][0]['snippet'];
         statistics = data['items'][0]['statistics'];
-        status = data['items'][0]['status'];
+        vidStatus = data['items'][0]['status'];
         fileDetails = data['items'][0]['fileDetails'];
         processingDetails = data['items'][0]['processingDetails'];
         suggestions = data['items'][0]['suggestions'];
@@ -374,19 +374,19 @@ function addSearchHTML() {
     newHTML = newHTML + "<p>Favorite Count: " + statistics['favoriteCount'] + "</p>";
     newHTML = newHTML + "<p>Comment Count: " + statistics['commentCount'] + "</p>";
     newHTML = newHTML + "<h4>[STATUS]</h4>";
-    newHTML = newHTML + "<p>Embeddable: " + status['embeddable'] + "</p>";
-    newHTML = newHTML + "<p>Public Stats Viewable: " + status['publicStatsViewable'] + "</p>";
-    newHTML = newHTML + "<p>Privacy Status: " + status['privacyStatus'] + "</p>";
-    newHTML = newHTML + "<p>Upload Status: " + status['uploadStatus'] + "</p>";
-    if (status['uploadStatus'] === 'failed') {
-        v_FailureReason = status['failureReason'];
+    newHTML = newHTML + "<p>Embeddable: " + vidStatus['embeddable'] + "</p>";
+    newHTML = newHTML + "<p>Public Stats Viewable: " + vidStatus['publicStatsViewable'] + "</p>";
+    newHTML = newHTML + "<p>Privacy Status: " + vidStatus['privacyStatus'] + "</p>";
+    newHTML = newHTML + "<p>Upload Status: " + vidStatus['uploadStatus'] + "</p>";
+    if (vidStatus['uploadStatus'] === 'failed') {
+        v_FailureReason = vidStatus['failureReason'];
         newHTML = newHTML + "<p>FAILURE REASON: " + v_FailureReason + "</p>";
     }
-    if (status['uploadStatus'] === 'rejected') {
-        v_RejectionReason = status['rejectionReason'];
+    if (vidStatus['uploadStatus'] === 'rejected') {
+        v_RejectionReason = vidStatus['rejectionReason'];
         newHTML = newHTML + "<p>REJECTION REASON: " + v_RejectionReason + "</p>";
     }
-    newHTML = newHTML + "<p>License Status: " + status['license'] + "</p>";
+    newHTML = newHTML + "<p>License Status: " + vidStatus['license'] + "</p>";
     if (typeof fileDetails !== "undefined") {
         newHTML = newHTML + "<h4>[FILE DETAILS]</h4>";
         newHTML = newHTML + "<p>File Name: " + fileDetails['fileName'] + "</p>";
@@ -489,8 +489,9 @@ function loadSelectorProfile() {
     $('#c_PrivacyStatus').val(profile['PrivacyStatus']);
     $('#c_License').val(profile['License']);
     $('#c_Description').val(profile['Description']);
+    var tagString = $('#c_TagsList').val();
     if (typeof profile['Tags'] !== "undefined")
-        $('#c_TagsList').val(profile['Tags'].toString());
+        $('#c_TagsList').val(tagString + profile['Tags'].toString());
 }
 
 // Delete selected profile
@@ -556,7 +557,7 @@ function saveProfile(name) {
             profilelist = {};
         }
 
-        profile = {};
+        var profile = {};
         profile.Title = $('#pro_Title').val();
         profile.Description = $('#pro_Description').val();
         profile.Tags = $('#pro_TagsList').val().split(",");
