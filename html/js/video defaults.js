@@ -21,9 +21,10 @@ var selected_Profile, profilesHTML;
 function handleAPILoaded() {
     enableForm();
     $('#uploadsSelectionBox').attr('disabled', true);
+    $('#profileSelector').attr('disabled', true);
     $('#update-status').html("");
     categoryDropdownHTML = playlistsDropdownHTML = uploadsDropdownHTML = videoHTML = selected_Profile = profilesHTML = "";
-    videoSelectedPlaylistId = thumbnail_url = "0";
+    videoSelectedPlaylistId = thumbnail_url = "";
     getCategoryList();
 }
 
@@ -298,10 +299,10 @@ function updateVideo() {
     updateRequest.execute(function(response) {
         var res = response.result;
         if (res) {
-            if (videoSelectedPlaylistId !== "0") {
+            if (videoSelectedPlaylistId !== "") {
                 addToPlaylist(videoID);
             }
-            if (thumbnail_url !== "0") {
+            if (thumbnail_url !== "") {
                 setThumbnail();
             }
             getVideoData(videoID, true);
@@ -449,10 +450,13 @@ function getProfiles() {
         var profilelist = JSON.parse(localStorage.getItem('Profiles'));
         if (profilelist !== null) {
             profilesHTML = "";
-            for (var i in profilelist)
+            for (var pname in profilelist)
             {
-                profilesHTML = profilesHTML + "<option value=\"" + profilelist[i] + "\">" + profilelist[i] + "</option>\n";
+                if (obj.hasOwnProperty(pname)) {
+                    profilesHTML = profilesHTML + "<option value=\"" + pname + "\">" + pname + "</option>\n";
+                }
             }
+            $('#profileSelector').attr('disabled', false);
             $('#profileSelector').html(profilesHTML);
         }
     }
@@ -515,7 +519,7 @@ function saveProfile(name) {
         if (profilelist === null) {
             profilelist = {};
         }
-        
+
         profile = {};
         profile.Title = $('#pro_Title').val();
         profile.Description = $('#pro_Description').val();
