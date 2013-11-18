@@ -459,6 +459,7 @@ function getProfiles() {
                 }
             }
             $('#profileSelector').attr('disabled', false);
+            $('#accessProfilesButton').attr('disabled', false);
             $('#profileSelector').html(profilesHTML);
         }
     }
