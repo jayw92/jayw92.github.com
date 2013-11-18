@@ -102,7 +102,7 @@
                         <h4>Select a profile to load</h4>
                         <select multiple disabled id="profileSelector" onchange="selectedProfile(this)" class="form-control"></select>
                     </div><br>
-                    
+
                     <div class="container text-center">
                         <button id="loadProfilebutton" class="btn btn-primary btn-md" disabled onclick="loadSelectorProfile()">
                             Use Profile</button>
@@ -183,17 +183,20 @@
                                             </div>
 
                                         </div>
-                                    </div><hr>
-                                    
+                                    </div><br>
+
+                                    <div class="container text-center">
+                                        <button onclick="saveSelectedProfile()" class="btn btn-primary" id="addProfile-button">Save to Current Profile</button><hr>
+                                    </div>
+
                                     <div id="profilesave-status" class="container"></div>
-                                    
-                                    <h4>Save defaults to profile</h4>
+
+                                    <h4>Save defaults to new profile</h4>
                                     <div class="input-group input-group-md">
                                         <span class="input-group-addon">Save Profile As..</span> <input class="form-control" id="profile_name" type="text">
                                     </div><br>
-                                    <div class="container text-right">
+                                    <div class="container text-center">
                                         <button onclick="saveNewProfile()" class="btn btn-primary" id="addProfile-button">Save to New Profile</button>
-                                        <button onclick="saveSelectedProfile()" class="btn btn-primary" id="addProfile-button">Save to Selected Profile</button>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -207,7 +210,7 @@
                     <div id="update-status" class="container"></div>
 
                     <div class="container text-center" id="VideoPic"></div><br>
-                    
+
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h4>Video Default</h4>
