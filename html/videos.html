@@ -101,13 +101,16 @@
                     <div class="container">
                         <h4>Select a profile to load</h4>
                         <select multiple disabled id="profileSelector" onchange="selectedProfile(this)" class="form-control"></select>
+                    </div><br>
+                    
+                    <div class="container text-center">
+                        <button id="loadProfilebutton" class="btn btn-primary btn-md" disabled onclick="loadSelectorProfile()">
+                            Use Profile</button>
+                        <!-- Button trigger modal -->
+                        <button id="accessProfilesButton" class="btn btn-primary btn-md" disabled data-toggle="modal" data-target="#SelectProfileModal">
+                            Access Profile Settings</button>
                     </div><hr>
 
-                    <div class="container text-center">
-                        <!-- Button trigger modal -->
-                        <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#SelectProfileModal">
-                            Access Profiles</button>
-                    </div><br>
 
                     <!-- Modal -->
                     <div class="modal fade" id="SelectProfileModal" tabindex="-1" role="dialog" aria-labelledby="SelectProfileModalLabel" aria-hidden="true">
@@ -182,7 +185,7 @@
                                     
                                     <div id="profilesave-status" class="container"></div>
                                     
-                                    <h4>Add current defaults to new profile</h4>
+                                    <h4>Save defaults to profile</h4>
                                     <div class="input-group input-group-md">
                                         <span class="input-group-addon">Save Profile As..</span> <input class="form-control" id="profile_name" type="text">
                                     </div><br>

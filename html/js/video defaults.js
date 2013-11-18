@@ -22,9 +22,13 @@ function handleAPILoaded() {
     enableForm();
     $('#uploadsSelectionBox').attr('disabled', true);
     $('#profileSelector').attr('disabled', true);
+    $('#accessProfilesButton').attr('disabled', true);
+    $('#loadProfilebutton').attr('disabled', true);
     $('#update-status').html("");
     categoryDropdownHTML = playlistsDropdownHTML = uploadsDropdownHTML = videoHTML = selected_Profile = profilesHTML = "";
     videoSelectedPlaylistId = thumbnail_url = "";
+    // Load profiles already saved in storage
+    getProfiles();
     getCategoryList();
 }
 
@@ -175,9 +179,6 @@ function requestVideoPlaylist(pageToken) {
             }
             $('#uploadsSelectionBox').html(uploadsDropdownHTML);
             $('#uploadsSelectionBox').attr('disabled', false);
-
-            // Load profiles already saved in storage
-            getProfiles();
 
         } else {
             $('#uploadItems-status').html("<div class=\"alert alert-danger\"><strong>Sorry!</strong> You have not uploaded any videos.</div>");
@@ -447,6 +448,7 @@ function getProfiles() {
     if (typeof (Storage) !== "undefined")
     {
         // Yes! localStorage and sessionStorage support!
+        $('#accessProfilesButton').attr('disabled', true);
         var profilelist = JSON.parse(localStorage.getItem('Profiles'));
         if (profilelist !== null) {
             profilesHTML = "";
@@ -468,10 +470,31 @@ function getProfiles() {
     }
 }
 
+// Load selected profile to the main data form
+function loadSelectorProfile() {
+    var profilelist = JSON.parse(localStorage.getItem('Profiles'));
+    var profile = profilelist[selected_Profile];
+
+    $('#c_Title').val(profile['Title']);
+    if (profile['Embeddable'])
+        $('#c_Embeddable').prop("checked", true);
+    if (profile['PublicStatsViewable'])
+        $('#c_PublicStatsViewable').prop("checked", true);
+    $('#c_CategoryId').val(profile['Category']);
+    $('#c_PlaylistId').val(profile['Playlist']);
+    $('#c_PrivacyStatus').val(profile['PrivacyStatus']);
+    $('#c_License').val(profile['License']);
+    $('#c_Description').val(profile['Description']);
+    if (typeof profile['Tags'] !== "undefined")
+        $('#c_TagsList').val(profile['Tags'].toString());
+}
+
 // Selector onchange() for profiles
 function selectedProfile(sel) {
     selected_Profile = sel.options[sel.selectedIndex].text;
     load_Profile_Data();
+    $('#SelectProfileModalLabel').html('Profile Settings - ' + selected_Profile);
+    $('#loadProfilebutton').attr('disabled', false);
 }
 
 // Load selected Profile into the form for profile settings
@@ -526,9 +549,9 @@ function saveProfile(name) {
         profile.Tags = $('#pro_TagsList').val().split(",");
 
         var ex = document.getElementById("pro_CategoryId");
-        profile.Category = "ex.options[ex.selectedIndex].value";
+        profile.Category = ex.options[ex.selectedIndex].value;
         ex = document.getElementById("pro_PlaylistId");
-        profile.Playlist = "ex.options[ex.selectedIndex].value";
+        profile.Playlist = ex.options[ex.selectedIndex].value;
         ex = document.getElementById("pro_License");
         profile.License = ex.options[ex.selectedIndex].value;
         ex = document.getElementById("pro_PrivacyStatus");
@@ -541,8 +564,8 @@ function saveProfile(name) {
         profilelist[name] = profile;
 
         localStorage.setItem('Profiles', JSON.stringify(profilelist));
-        $('#profilesave-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Saved Default settings to profile!</div>");
-
+        $('#SelectProfileModal').modal('hide');
+        getProfiles();
     }
     else
     {
