@@ -11,7 +11,7 @@ var playlists, playlistsDropdownHTML;
 var videoSelectedPlaylistId, videoSelectedPlaylist;
 var cateSnip, CategoryTitleReturn, categoryDropdownHTML;
 var thumbnail_url, thumbnailimage;
-
+var selected_Profile, profilesHTML;
 
 ////////////////////////////////////////////////////////////////////////////
 //                         FIRST PAGE LOAD FUNCTIONS
@@ -22,7 +22,7 @@ function handleAPILoaded() {
     enableForm();
     $('#uploadsSelectionBox').attr('disabled', true);
     $('#update-status').html("");
-    categoryDropdownHTML = playlistsDropdownHTML = uploadsDropdownHTML = videoHTML = "";
+    categoryDropdownHTML = playlistsDropdownHTML = uploadsDropdownHTML = videoHTML = selected_Profile = profilesHTML = "";
     videoSelectedPlaylistId = thumbnail_url = "0";
     getCategoryList();
 }
@@ -50,6 +50,7 @@ function getCategoryList() {
             index++;
         }
         $('#c_CategoryId').html(categoryDropdownHTML);
+        $('#pro_CategoryId').html(categoryDropdownHTML);
         requestUserChannelData();
     });
 }
@@ -84,7 +85,7 @@ function getUserPlaylists(isFirstLoad, pageToken) {
     var requestOptions = {
         mine: true,
         part: 'id,snippet',
-        maxResults: 10
+        maxResults: 50
     };
     if (pageToken) {
         requestOptions.pageToken = pageToken;
@@ -120,6 +121,7 @@ function getUserPlaylists(isFirstLoad, pageToken) {
             }
             playlistsDropdownHTML = playlistsDropdownHTML + "<option selected=\"selected\" value=\"" + 0 + "\">Select a Playlist</option>\n"
             $('#c_PlaylistId').html(playlistsDropdownHTML);
+            $('#pro_PlaylistId').html(playlistsDropdownHTML);
 
             if (isFirstLoad)
                 requestVideoPlaylist();
@@ -172,6 +174,10 @@ function requestVideoPlaylist(pageToken) {
             }
             $('#uploadsSelectionBox').html(uploadsDropdownHTML);
             $('#uploadsSelectionBox').attr('disabled', false);
+
+            // Load profiles already saved in storage
+            getProfiles();
+
         } else {
             $('#uploadItems-status').html("<div class=\"alert alert-danger\"><strong>Sorry!</strong> You have not uploaded any videos.</div>");
         }
@@ -225,13 +231,13 @@ function addToPlaylist(vid, startPos, endPos) {
 function setThumbnail() {
     var request = gapi.client.youtube.thumbnails.set({
         videoID: videoID,
-        media_body:thumbnail_url
+        media_body: thumbnail_url
     });
     request.execute(function(response) {
         var result = response.result;
-            console.log(result);
+        console.log(result);
         if (result) {
-           $('#uploaded-image').html("<div class=\"alert alert-success\"><strong>Success!</strong> Thumbnail added to video.</div><img id=\"preview-img\" src=\"" + thumbnailimage + "\" height=\"90\" width=\"120\">");
+            $('#uploaded-image').html("<div class=\"alert alert-success\"><strong>Success!</strong> Thumbnail added to video.</div><img id=\"preview-img\" src=\"" + thumbnailimage + "\" height=\"90\" width=\"120\">");
         }
         else {
             $('#uploaded-image').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Upload to youtube failed.</div>");
@@ -424,6 +430,124 @@ function populateWithHTML() {
     document.getElementById("search-container").innerHTML = newHTML;
     document.getElementById("VideoPic").innerHTML = videoHTML;
 }
+
+////////////////////////////////////////////////////////////////////////////
+//                         -END OF VIDEO SECTION -
+////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////////////
+//                        DEFAULTS PROFILES FUNCTIONS
+////////////////////////////////////////////////////////////////////////////
+
+// Check & setup profiles selector
+function getProfiles() {
+    if (typeof (Storage) !== "undefined")
+    {
+        // Yes! localStorage and sessionStorage support!
+        var profilelist = JSON.parse(localStorage.getItem('Profiles'));
+        if (profilelist !== null) {
+            profilesHTML = "";
+            for (var i in profilelist)
+            {
+                profilesHTML = profilesHTML + "<option value=\"" + profilelist[i] + "\">" + profilelist[i] + "</option>\n";
+            }
+            $('#profileSelector').html(profilesHTML);
+        }
+    }
+    else
+    {
+        // Sorry! No web storage support..
+        $('#update-status').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Browser doesn't support web Storage.</div>");
+
+    }
+}
+
+// Selector onchange() for profiles
+function selectedProfile(sel) {
+    selected_Profile = sel.options[sel.selectedIndex].text;
+    load_Profile_Data();
+}
+
+// Load selected Profile into the form for profile settings
+function load_Profile_Data() {
+    var profilelist = JSON.parse(localStorage.getItem('Profiles'));
+    var profile = profilelist[selected_Profile];
+
+    $('#pro_Title').val(profile['Title']);
+    if (profile['Embeddable'])
+        $('#pro_Embeddable').prop("checked", true);
+    if (profile['PublicStatsViewable'])
+        $('#pro_PublicStatsViewable').prop("checked", true);
+    $('#pro_CategoryId').val(profile['Category']);
+    $('#pro_PlaylistId').val(profile['Playlist']);
+    $('#pro_PrivacyStatus').val(profile['PrivacyStatus']);
+    $('#pro_License').val(profile['License']);
+    $('#pro_Description').val(profile['Description']);
+    if (typeof profile['Tags'] !== "undefined")
+        $('#pro_TagsList').val(profile['Tags'].toString());
+}
+
+// Selected to save to a new profile
+function saveNewProfile() {
+    var profile_name = $('#profile_name').val();
+    saveProfile(profile_name);
+}
+
+// Save profile to the selected profile
+function saveSelectedProfile() {
+    if (selected_Profile !== "") {
+        saveProfile(selected_Profile);
+    }
+    else {
+        $('#profilesave-status').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> No saved profile selected.</div>");
+    }
+}
+
+// Save any profile by profile name
+function saveProfile(name) {
+
+    if (typeof (Storage) !== "undefined")
+    {
+        // Yes! localStorage and sessionStorage support!
+        var profilelist = JSON.parse(localStorage.getItem('Profiles'));
+        if (profilelist === null) {
+            profilelist = {};
+        }
+        
+        profile = {};
+        profile.Title = $('#pro_Title').val();
+        profile.Description = $('#pro_Description').val();
+        profile.Tags = $('#pro_TagsList').val().split(",");
+
+        var ex = document.getElementById("pro_CategoryId");
+        profile.Category = "ex.options[ex.selectedIndex].value";
+        ex = document.getElementById("pro_PlaylistId");
+        profile.Playlist = "ex.options[ex.selectedIndex].value";
+        ex = document.getElementById("pro_License");
+        profile.License = ex.options[ex.selectedIndex].value;
+        ex = document.getElementById("pro_PrivacyStatus");
+        profile.PrivacyStatus = ex.options[ex.selectedIndex].value;
+        ex = document.getElementById("pro_Embeddable");
+        profile.Embeddable = ex.checked;
+        ex = document.getElementById("pro_PublicStatsViewable");
+        profile.PublicStatsViewable = ex.checked;
+
+        profilelist[name] = profile;
+
+        localStorage.setItem('Profiles', JSON.stringify(profilelist));
+        $('#profilesave-status').html("<div class=\"alert alert-success\"><strong>Success!</strong> Saved Default settings to profile!</div>");
+
+    }
+    else
+    {
+        // Sorry! No web storage support..
+        $('#profilesave-status').html("<div class=\"alert alert-danger\"><strong>Failed!</strong> Browser doesn't support web Storage.</div>");
+
+    }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////
 //                         -END OF VIDEO SECTION -

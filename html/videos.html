@@ -97,9 +97,11 @@
 
                     <hr>
 
-                    <div id="update-status" class="container"></div>
 
-                    <div class="container text-center" id="VideoPic"></div><br>
+                    <div class="container">
+                        <h4>Select a profile to load</h4>
+                        <select multiple disabled id="profileSelector" onchange="selectedProfile(this)" class="form-control"></select>
+                    </div><hr>
 
                     <div class="container text-center">
                         <!-- Button trigger modal -->
@@ -113,18 +115,80 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="SelectProfileModalLabel">Select a profile to load</h4>
+                                    <h4 class="modal-title" id="SelectProfileModalLabel">Profile Settings</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="container">
-                                        <select multiple disabled id="profileSelector" onchange="selectedProfile(this)" class="form-control"></select>
+
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-addon">Title</span> <input class="form-control" id="pro_Title" type="text">
+                                            </div><br>
+
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input id="pro_Embeddable" type="checkbox"> Make Video Embeddable
+                                                </label>
+                                            </div>
+                                            <div id="pro_PublicStatsViewable" class="checkbox">
+                                                <label>
+                                                    <input type="checkbox"> Make Public Video Stats Viewable
+                                                </label>
+                                            </div>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Video Category</span> 
+                                                <select id="pro_CategoryId" class="form-control"></select>
+                                            </div><br>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Add to Playlist</span> 
+                                                <select id="pro_PlaylistId" class="form-control" onchange="VideoAddPlaylist(this)"></select>
+                                            </div><br>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Privacy Status</span> 
+                                                <select id="pro_PrivacyStatus" class="form-control">
+                                                    <option value="private">Private</option>
+                                                    <option value="public">Public</option>
+                                                    <option value="unlisted">Unlisted</option>
+                                                </select>
+                                            </div><br>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Video License</span>
+                                                <select id="pro_License" class="form-control">
+                                                    <option value="creativeCommon">Creative Common License</option>
+                                                    <option value="youtube">Youtube License</option>
+                                                </select>
+                                            </div><br>
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">Description</div>
+                                                <div class="panel-body">
+                                                    <textarea class="form-control" id="pro_Description" rows="4" cols="60"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">Add Tags (ex: tag1,tag2,tag3,tags)</div>
+                                                <div class="panel-body">
+                                                    <textarea class="form-control" id="pro_TagsList" rows="2" cols="40"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div><hr>
+                                    
+                                    <div id="profilesave-status" class="container"></div>
+                                    
                                     <h4>Add current defaults to new profile</h4>
                                     <div class="input-group input-group-md">
                                         <span class="input-group-addon">Save Profile As..</span> <input class="form-control" id="profile_name" type="text">
                                     </div><br>
                                     <div class="container text-right">
-                                        <button class="btn btn-primary" id="addProfile-button">Add New Defaults Profile</button>
+                                        <button onclick="saveNewProfile()" class="btn btn-primary" id="addProfile-button">Save to New Profile</button>
+                                        <button onclick="saveSelectedProfile()" class="btn btn-primary" id="addProfile-button">Save to Selected Profile</button>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -134,6 +198,11 @@
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
 
+
+                    <div id="update-status" class="container"></div>
+
+                    <div class="container text-center" id="VideoPic"></div><br>
+                    
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h4>Video Default</h4>
@@ -223,26 +292,28 @@
                             <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
                         </div>
 
-                        <div class="col-md-6 container" id="search-container">
-                        </div>
 
                     </div>
 
-
-                    <!-- FOOTER -->
-                    <footer>
-                        <hr>
-                        <p class="pull-right"><a href="#">Back to top</a></p>
-                        <p>&copy; Youtube Capstone 2013.</p>
-                    </footer>
-
                 </div>
 
-                <!-- Bootstrap core JavaScript
-                ================================================== -->
-                <!-- Placed at the end of the document so the pages load faster -->
-                <script src="../assets/js/jquery.js"></script>
-                <script src="../dist/js/bootstrap.min.js"></script>
-                <script src="../assets/js/holder.js"></script>
-                </body>
-                </html>
+                <div class="col-md-6 container" id="search-container">
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <footer>
+                <hr>
+                <p class="pull-right"><a href="#">Back to top</a></p>
+                <p>&copy; Youtube Capstone 2013.</p>
+            </footer>
+        </div>
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="../assets/js/jquery.js"></script>
+        <script src="../dist/js/bootstrap.min.js"></script>
+        <script src="../assets/js/holder.js"></script>
+    </body>
+</html>
