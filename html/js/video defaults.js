@@ -451,7 +451,7 @@ function getProfiles() {
     if (typeof (Storage) !== "undefined")
     {
         // Yes! localStorage and sessionStorage support!
-        $('#accessProfilesButton').attr('disabled', true);
+        $('#accessProfilesButton').attr('disabled', false);
         var profilelist = JSON.parse(localStorage.getItem('Profiles'));
         if (profilelist !== null) {
             profilesHTML = "";
