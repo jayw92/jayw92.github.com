@@ -604,7 +604,7 @@ function saveProfile(name) {
       profilelist[name] = profile;
 
       localStorage.setItem('Profiles', JSON.stringify(profilelist));
-      example_template = {
+      newTemplate = {
          'username': userID,
          'template_title': name,
          'video_title': profile.Title,
@@ -617,6 +617,7 @@ function saveProfile(name) {
          'description': profile.Description,
          'tags': profile.Tags
       };
+      store_template(newTemplate);
       $('#SelectProfileModal').modal('hide');
       getProfiles();
 //   }
