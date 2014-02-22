@@ -113,100 +113,6 @@
                             Access Profile Settings</button>
                     </div><hr>
 
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="SelectProfileModal" tabindex="-1" role="dialog" aria-labelledby="SelectProfileModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="SelectProfileModalLabel">Profile Settings</h4>
-                                </div>
-                                <div class="modal-body">
-
-                                    <div class="panel panel-primary">
-                                        <div class="panel-body">
-                                            <div class="input-group input-group-lg">
-                                                <span class="input-group-addon">Title</span> <input class="form-control" id="pro_Title" type="text">
-                                            </div><br>
-
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input id="pro_Embeddable" type="checkbox"> Make Video Embeddable
-                                                </label>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input id="pro_PublicStatsViewable" type="checkbox"> Make Public Video Stats Viewable
-                                                </label>
-                                            </div>
-
-                                            <div class="input-group">
-                                                <span class="input-group-addon">Video Category</span> 
-                                                <select id="pro_CategoryId" class="form-control"></select>
-                                            </div><br>
-
-                                            <div class="input-group">
-                                                <span class="input-group-addon">Add to Playlist</span> 
-                                                <select id="pro_PlaylistId" class="form-control" onchange="VideoAddPlaylist(this)"></select>
-                                            </div><br>
-
-                                            <div class="input-group">
-                                                <span class="input-group-addon">Privacy Status</span> 
-                                                <select id="pro_PrivacyStatus" class="form-control">
-                                                    <option value="private">Private</option>
-                                                    <option value="public">Public</option>
-                                                    <option value="unlisted">Unlisted</option>
-                                                </select>
-                                            </div><br>
-
-                                            <div class="input-group">
-                                                <span class="input-group-addon">Video License</span>
-                                                <select id="pro_License" class="form-control">
-                                                    <option value="creativeCommon">Creative Common License</option>
-                                                    <option value="youtube">Youtube License</option>
-                                                </select>
-                                            </div><br>
-
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">Description</div>
-                                                <div class="panel-body">
-                                                    <textarea class="form-control" id="pro_Description" rows="4" cols="60"></textarea>
-                                                </div>
-                                            </div>
-
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">Add Tags (ex: tag1,tag2,tag3,tags)</div>
-                                                <div class="panel-body">
-                                                    <textarea class="form-control" id="pro_TagsList" rows="2" cols="40"></textarea>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div><br>
-
-                                    <div class="container text-center">
-                                        <button onclick="saveSelectedProfile()" class="btn btn-primary" id="addProfile-button">Save to Current Profile</button><hr>
-                                    </div>
-
-                                    <div id="profilesave-status" class="container"></div>
-
-                                    <h4>Save defaults to new profile</h4>
-                                    <div class="input-group input-group-md">
-                                        <span class="input-group-addon">Save Profile As..</span> <input class="form-control" id="profile_name" type="text">
-                                    </div><br>
-                                    <div class="container text-center">
-                                        <button onclick="saveNewProfile()" class="btn btn-primary" id="addProfile-button">Save to New Profile</button>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    Click anywhere outside popup box to close.
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-
-
                     <div id="update-status" class="container"></div>
 
                     <div class="container text-center" id="VideoPic"></div><br>
@@ -285,7 +191,7 @@
                             </div>
 
                             <div class="panel panel-default">
-                                <div class="panel-heading">Add Tags (ex: tag1,tag2,tag3,tags)</div>
+                                <div class="panel-heading">Add Tags (ex: tag1 tag2 "tag3 tag3")</div>
                                 <div class="panel-body">
                                     <textarea class="form-control" id="c_TagsList" rows="2" cols="40"></textarea>
                                 </div>
@@ -304,6 +210,98 @@
                     </div>
 
                 </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="SelectProfileModal" tabindex="-1" role="dialog" aria-labelledby="SelectProfileModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="SelectProfileModalLabel">Profile Settings</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="panel panel-primary">
+                                    <div class="panel-body">
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-addon">Title</span> <input class="form-control" id="pro_Title" type="text">
+                                        </div><br>
+
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="pro_Embeddable" type="checkbox"> Make Video Embeddable
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input id="pro_PublicStatsViewable" type="checkbox"> Make Public Video Stats Viewable
+                                            </label>
+                                        </div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Video Category</span> 
+                                            <select id="pro_CategoryId" class="form-control"></select>
+                                        </div><br>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Add to Playlist</span> 
+                                            <select id="pro_PlaylistId" class="form-control" onchange="VideoAddPlaylist(this)"></select>
+                                        </div><br>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Privacy Status</span> 
+                                            <select id="pro_PrivacyStatus" class="form-control">
+                                                <option value="private">Private</option>
+                                                <option value="public">Public</option>
+                                                <option value="unlisted">Unlisted</option>
+                                            </select>
+                                        </div><br>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Video License</span>
+                                            <select id="pro_License" class="form-control">
+                                                <option value="creativeCommon">Creative Common License</option>
+                                                <option value="youtube">Youtube License</option>
+                                            </select>
+                                        </div><br>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">Description</div>
+                                            <div class="panel-body">
+                                                <textarea class="form-control" id="pro_Description" rows="4" cols="60"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">Add Tags (ex: tag1 tag2 "tag3 tag3")</div>
+                                            <div class="panel-body">
+                                                <textarea class="form-control" id="pro_TagsList" rows="2" cols="40"></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div><br>
+
+                                <div class="container text-center">
+                                    <button onclick="saveSelectedProfile()" class="btn btn-primary" id="addProfile-button">Save to Current Profile</button><hr>
+                                </div>
+
+                                <div id="profilesave-status" class="container"></div>
+
+                                <h4>Save defaults to new profile</h4>
+                                <div class="input-group input-group-md">
+                                    <span class="input-group-addon">Save Profile As..</span> <input class="form-control" id="profile_name" type="text">
+                                </div><br>
+                                <div class="container text-center">
+                                    <button onclick="saveNewProfile()" class="btn btn-primary" id="addProfile-button">Save to New Profile</button>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                Click anywhere outside popup box to close.
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
 
                 <div class="col-md-6 container" id="search-container">
                 </div>
